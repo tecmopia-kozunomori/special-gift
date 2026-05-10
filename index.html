@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>特典チケット - テクモピア 公津の杜</title>
+    <style>
+        /* 基本スタイル */
+        body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #fce4ec; color: #333; overflow: hidden; }
+        .ticket-container { background: #ffffff; width: 92%; max-width: 360px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); overflow: hidden; text-align: center; border: 4px solid #ff80ab; position: relative; }
+        
+        .game-area { height: 180px; background: linear-gradient(#b3e5fc, #e1f5fe); position: relative; overflow: hidden; border-bottom: 4px solid #ff80ab; }
+
+        /* アニメーション設定 */
+        .ufo-crane { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 10; transition: top 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .crane-wire { width: 4px; height: 50px; background: #9e9e9e; margin: 0 auto; }
+        .crane-arm { width: 44px; height: 22px; background: #757575; border-radius: 6px; position: relative; }
+        .crane-arm::before, .crane-arm::after { content: ''; position: absolute; width: 16px; height: 28px; border: 4px solid #757575; border-top: none; top: 18px; border-radius: 0 0 12px 12px; transition: transform 0.4s; }
+        .crane-arm::before { left: 0; transform: rotate(25deg); }
+        .crane-arm::after { right: 0; transform: rotate(-25deg); }
+        .catching .crane-arm::before { transform: rotate(5deg); }
+        .catching .crane-arm::after { transform: rotate(-5deg); }
+
+        .bear { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); width: 64px; height: 54px; background: #a1887f; border-radius: 32px 32px 22px 22px; transition: bottom 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bear::before, .bear::after { content: ''; position: absolute; width: 22px; height: 22px; background: #a1887f; border-radius: 50%; top: -6px; }
+        .bear::before { left: -6px; } .bear::after { right: -6px; }
+        .bear-face::before { content: '👀'; position: absolute; top: 12px; left: 16px; font-size: 14px; }
+        .bear-face::after { content: ''; position: absolute; top: 28px; left: 28px; background: #5d4037; width: 10px; height: 6px; border-radius: 50%; }
+
+        .swing { animation: craneSwing 3.5s ease-in-out infinite; }
+        @keyframes craneSwing { 0%, 100% { left: 35%; } 50% { left: 65%; } }
+
+        .header { background-color: #ff80ab; color: #fff; padding: 12px; font-weight: bold; letter-spacing: 1px; }
+        .content { padding: 24px; }
+        .benefit-content { font-size: 1.5rem; font-weight: 900; color: #ff4081; margin-bottom: 15px; line-height: 1.3; }
+        
+        .timer-box { background: #222; color: #fff; padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 2px solid #ff4081; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
+        .timer-label { font-size: 0.75rem; color: #ffab91; margin-bottom: 4px; font-weight: bold; }
+        .timer-value { font-size: 2.2rem; font-weight: bold; color: #f1c40f; font-family: monospace; }
+
+        .presentation-notice { color: #d32f2f; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+
+        .staff-only-notice {
+            background-color: #ffebee;
+            color: #d32f2f;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: 1px dashed #d32f2f;
+        }
+
+        .use-button { background: linear-gradient(#ff4081, #f50057); color: #fff; border: none; padding: 18px; width: 100%; font-size: 1.2rem; font-weight: bold; border-radius: 40px; box-shadow: 0 5px 0 #c2185b; cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+        .use-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #c2185b; }
+        
+        #error-message, #expired-message, #already-used-today, #used-message { display: none; padding: 40px 20px; }
+        .status-icon { font-size: 4rem; margin-bottom: 10px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="ticket-container">
+        <div class="header">テクモピア 公津の杜</div>
+        
+        <div id="game-container" class="game-area">
+            <div id="ufo" class="ufo-crane swing">
+                <div class="crane-wire"></div>
+                <div class="crane-arm"></div>
+            </div>
+            <div id="target-bear" class="bear"><div class="bear-face"></div></div>
+        </div>
+
+        <div id="active-content" class="content">
+            <div class="benefit-content">🧸 クレーンゲーム<br>1回無料チケット</div>
+            
+            <div class="timer-box">
+                <div class="timer-label">有効期限（残り秒数）</div>
+                <div class="timer-value" id="seconds">---</div>
+            </div>
+
+            <div class="staff-only-notice">⚠️ ボタンはスタッフが操作します</div>
+
+            <div class="presentation-notice">
+                3階テクモピアのスタッフに<br>この画面をご提示ください
+            </div>
+
+            <button id="use-button" class="use-button">特典を利用する</button>
+            <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">※お客さまが押すと無効になる場合があります</p>
+        </div>
+
+        <div id="error-message" class="content">
+            <span class="status-icon">⚠️</span>
+            <div class="benefit-content">アクセス無効</div>
+            <p>二次元コードから読み直してください。</p>
+        </div>
+        <div id="expired-message" class="content">
+            <span class="status-icon">⏰</span>
+            <div class="benefit-content" style="color: #999;">有効期限切れ</div>
+            <p>制限時間を過ぎました。<br>もう一度やり直してね！</p>
+        </div>
+        <div id="already-used-today" class="content">
+            <span class="status-icon">✨</span>
+            <div class="benefit-content">本日は使用済み</div>
+            <p>また明日、遊びに来てね！🧸</p>
+        </div>
+        <div id="used-message" class="content">
+            <span class="status-icon">🎉</span>
+            <div class="benefit-content" style="color: #4caf50;">特典GET！</div>
+            <p style="font-weight: bold; font-size: 1.1rem;">スタッフにこの画面を<br>見せてください。</p>
+            <p id="closing-notice" style="font-size: 0.7rem; color: #f44336; margin-top: 20px; font-weight: bold;">※不正防止のため、間もなく画面を終了します</p>
+        </div>
+    </div>
+
+    <script>
+        const LIMIT_SECONDS = 300;
+        const today = new Date().toLocaleDateString('ja-JP');
+        const gasUrl = 'https://script.google.com/macros/s/AKfycbwifMNGEICMZEAGSi0xwBJgyP-ekGUfuUkU_vmbHOIddJ-GEMeVS3sjyUxXYDKAQGAf/exec';
+
+        const ufo = document.getElementById('ufo');
+        const bear = document.getElementById('target-bear');
+        const activeContent = document.getElementById('active-content');
+        const gameContainer = document.getElementById('game-container');
+
+        // デバイスロック機能
+        let deviceId = localStorage.getItem('tecmopia_id');
+        if (!deviceId) {
+            deviceId = Math.random().toString(36).substring(2, 10);
+            localStorage.setItem('tecmopia_id', deviceId);
+        }
+        if (!window.location.hash) {
+            window.location.replace(window.location.href + "#" + deviceId);
+        } else if (window.location.hash !== "#" + deviceId) {
+            activeContent.style.display = 'none';
+            gameContainer.style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+            throw new Error("Lock active");
+        }
+
+        // 本日の利用済みチェック
+        if (localStorage.getItem('tecmopia_used') === today) {
+            activeContent.style.display = 'none';
+            gameContainer.style.display = 'none';
+            document.getElementById('already-used-today').style.display = 'block';
+        } else {
+            let start = sessionStorage.getItem('tecmopia_start');
+            if (!start) {
+                start = Date.now();
+                sessionStorage.setItem('tecmopia_start', start);
+            }
+
+            const timer = setInterval(() => {
+                const now = Date.now();
+                const left = LIMIT_SECONDS - Math.floor((now - start) / 1000);
+                if (left <= 0) {
+                    clearInterval(timer);
+                    activeContent.style.display = 'none';
+                    gameContainer.style.display = 'none';
+                    document.getElementById('expired-message').style.display = 'block';
+                    sessionStorage.removeItem('tecmopia_start');
+                    return;
+                }
+                document.getElementById('seconds').textContent = left.toString().padStart(3, '0');
+            }, 1000);
+
+            document.getElementById('use-button').onclick = function() {
+                if (confirm('【スタッフ専用確認】\nスタッフが利用を確認しましたか？')) {
+                    clearInterval(timer);
+                    localStorage.setItem('tecmopia_used', today); // 翌日のリロード対策
+
+                    fetch(`${gasUrl}?t=${Date.now()}`, { mode: 'no-cors' });
+                    
+                    this.style.visibility = 'hidden';
+                    ufo.classList.remove('swing');
+                    ufo.style.left = "50%";
+                    
+                    setTimeout(() => {
+                        ufo.style.top = "70px";
+                        ufo.classList.add('catching');
+                        
+                        setTimeout(() => {
+                            ufo.style.top = "0px";
+                            bear.style.bottom = "85px";
+                            
+                            setTimeout(() => {
+                                activeContent.style.display = 'none';
+                                document.getElementById('used-message').style.display = 'block';
+
+                                // --- 最強の不正防止対策 ---
+                                // 3秒後に「中身を全消去」して永久ロック状態にする
+                                setTimeout(() => {
+                                    document.body.innerHTML = `
+                                        <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#eee; text-align:center; padding:20px; font-family:sans-serif;">
+                                            <div>
+                                                <span style="font-size:4rem;">✅</span>
+                                                <p style="font-weight:bold; color:#333; font-size:1.2rem;">利用が完了しました。</p>
+                                                <p style="color:#666; font-size:0.9rem;">この画面はもう使えません。<br>タブを閉じてください。</p>
+                                                <p style="color:#d32f2f; font-size:0.8rem; margin-top:20px; font-weight:bold;">※再度利用するには、明日以降に<br>二次元コードを読み直す必要があります。</p>
+                                            </div>
+                                        </div>`;
+                                }, 3000);
+
+                            }, 1000);
+                        }, 1000);
+                    }, 600);
+                }
+            };
+        }
+    </script>
+</body>
+</html>
