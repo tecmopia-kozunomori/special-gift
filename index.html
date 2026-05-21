@@ -3,63 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>特典チケット - テクモピア 公津の杜</title>
+    <title>特別クーポン - テクモピア</title>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        /* 基本スタイル */
-        body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #fce4ec; color: #333; overflow: hidden; }
-        .ticket-container { background: #ffffff; width: 92%; max-width: 360px; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); overflow: hidden; text-align: center; border: 4px solid #ff80ab; position: relative; }
-        
-        .game-area { height: 180px; background: linear-gradient(#b3e5fc, #e1f5fe); position: relative; overflow: hidden; border-bottom: 4px solid #ff80ab; }
-
-        /* アニメーション設定 */
-        .ufo-crane { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 10; transition: top 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .crane-wire { width: 4px; height: 50px; background: #9e9e9e; margin: 0 auto; }
-        .crane-arm { width: 44px; height: 22px; background: #757575; border-radius: 6px; position: relative; }
-        .crane-arm::before, .crane-arm::after { content: ''; position: absolute; width: 16px; height: 28px; border: 4px solid #757575; border-top: none; top: 18px; border-radius: 0 0 12px 12px; transition: transform 0.4s; }
-        .crane-arm::before { left: 0; transform: rotate(25deg); }
-        .crane-arm::after { right: 0; transform: rotate(-25deg); }
-        .catching .crane-arm::before { transform: rotate(5deg); }
-        .catching .crane-arm::after { transform: rotate(-5deg); }
-
-        .bear { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); width: 64px; height: 54px; background: #a1887f; border-radius: 32px 32px 22px 22px; transition: bottom 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .bear::before, .bear::after { content: ''; position: absolute; width: 22px; height: 22px; background: #a1887f; border-radius: 50%; top: -6px; }
-        .bear::before { left: -6px; } .bear::after { right: -6px; }
-        .bear-face::before { content: '👀'; position: absolute; top: 12px; left: 16px; font-size: 14px; }
-        .bear-face::after { content: ''; position: absolute; top: 28px; left: 28px; background: #5d4037; width: 10px; height: 6px; border-radius: 50%; }
-
-        .swing { animation: craneSwing 3.5s ease-in-out infinite; }
-        @keyframes craneSwing { 0%, 100% { left: 35%; } 50% { left: 65%; } }
-
-        .header { background-color: #ff80ab; color: #fff; padding: 12px; font-weight: bold; letter-spacing: 1px; }
-        .content { padding: 24px; }
-        .benefit-content { font-size: 1.5rem; font-weight: 900; color: #ff4081; margin-bottom: 15px; line-height: 1.3; }
-        
-        .timer-box { background: #222; color: #fff; padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 2px solid #ff4081; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
-        .timer-label { font-size: 0.75rem; color: #ffab91; margin-bottom: 4px; font-weight: bold; }
-        .timer-value { font-size: 2.2rem; font-weight: bold; color: #f1c40f; font-family: monospace; }
-
-        .presentation-notice { color: #d32f2f; font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
-
-        .staff-only-notice {
-            background-color: #ffebee;
-            color: #d32f2f;
-            font-size: 0.85rem;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            border: 1px dashed #d32f2f;
+        /* === 🎨 カラースキームと基本設定 === */
+        :root {
+            --main-bg: #fce4ec;
+            --container-bg: #ffffff;
+            --primary: #ff4081;
+            --primary-dark: #c2185b;
+            --accent: #00bcd4;
+            --accent-dark: #0097a7;
+            --warning: #d32f2f;
+            --text-color: #333333;
+            --jp-font: 'M PLUS Rounded 1c', sans-serif;
         }
 
-        .use-button { background: linear-gradient(#ff4081, #f50057); color: #fff; border: none; padding: 18px; width: 100%; font-size: 1.2rem; font-weight: bold; border-radius: 40px; box-shadow: 0 5px 0 #c2185b; cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
-        .use-button:active { transform: translateY(3px); box-shadow: 0 2px 0 #c2185b; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--jp-font);
+            background-color: var(--main-bg);
+            margin: 0; padding: 0;
+            color: var(--text-color);
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+            user-select: none; -webkit-user-select: none;
+        }
+
+        /* === 📱 メインコンテナ === */
+        .ticket-container {
+            background: var(--container-bg);
+            width: 92%; max-width: 380px;
+            border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            overflow: hidden; text-align: center;
+            border: 4px solid var(--primary);
+            position: relative; margin: 20px auto;
+        }
+
+        /* === 🎀 ヘッダー＆不正防止バー === */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #ff80ab);
+            color: #fff; padding: 12px; font-weight: 900;
+            font-size: 1.1rem; border-bottom: 4px solid var(--primary-dark);
+        }
+
+        .anti-fraud-bar {
+            background: repeating-linear-gradient(45deg, var(--primary), var(--primary) 15px, #ff80ab 15px, #ff80ab 30px);
+            background-size: 42px 42px; animation: moveStripes 1s linear infinite;
+            height: 10px; width: 100%; margin-bottom: 15px;
+        }
+        @keyframes moveStripes { from { background-position: 0 0; } to { background-position: 42px 0; } }
+
+        .content { padding: 0 20px 24px; }
+
+        /* === 🎁 1ページ目：ワクワク見出し === */
+        .promo-header { margin: 15px 0 25px; animation: bouncePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .promo-sub { font-size: 1.1rem; color: #e65100; font-weight: 900; display: block; margin-bottom: 5px; }
+        .promo-main { 
+            font-size: 1.6rem; color: #d84315; font-weight: 900; line-height: 1.4;
+            background: linear-gradient(transparent 60%, #fff9c4 60%); display: inline;
+            text-shadow: 1px 1px 0px #ffe0b2;
+        }
+        @keyframes bouncePop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* === 🎫 チケット風デザイン === */
+        .ticket-box {
+            background: linear-gradient(135deg, #fffde7, #fff9c4);
+            border: 3px dashed #fbc02d; border-radius: 16px;
+            padding: 25px 15px; margin: 20px 0; position: relative; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        /* キラッと光るエフェクト */
+        .ticket-box::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); animation: shine 3s infinite; z-index: 1;
+        }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+        /* ガシャン！と押されるUSEDスタンプ */
+        .ticket-box.used::after {
+            content: 'USED'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-20deg);
+            color: rgba(211, 47, 47, 0.85); font-size: 4rem; font-weight: 900;
+            border: 8px solid rgba(211, 47, 47, 0.85); padding: 5px 20px;
+            border-radius: 15px; z-index: 10; font-family: 'Arial Black', sans-serif;
+            animation: stampDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes stampDown { 
+            0% { transform: translate(-50%, -50%) scale(3) rotate(0); opacity: 0; } 
+            100% { transform: translate(-50%, -50%) scale(1) rotate(-20deg); opacity: 1; } 
+        }
+
+        .ticket-label { background: #ffe0b2; color: #e65100; padding: 4px 15px; border-radius: 20px; font-size: 0.95rem; font-weight: 900; position: relative; z-index: 2; }
+        .ticket-title { font-size: 1.8rem; font-weight: 900; color: #d84315; margin: 15px 0 0; line-height: 1.2; position: relative; z-index: 2; }
+
+        /* === ⏳ タイマー === */
+        .timer-box {
+            background: #222; color: #fff; padding: 12px; border-radius: 14px;
+            margin: 20px 0; border: 2px solid var(--primary);
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .timer-label { font-size: 0.8rem; color: #ffab91; font-weight: bold; margin-bottom: 2px; }
+        .timer-value { font-size: 2.2rem; font-weight: bold; color: #f1c40f; font-family: monospace; letter-spacing: 2px; }
+
+        /* === 🔘 ボタン === */
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #f50057);
+            color: #fff; border: none; padding: 14px 10px; width: 100%;
+            border-radius: 40px; box-shadow: 0 6px 0 var(--primary-dark);
+            cursor: pointer; transition: 0.1s;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            line-height: 1.2;
+        }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--primary-dark); }
+        .btn-main-text { font-size: 1.3rem; font-weight: 900; }
+        .btn-sub-text { font-size: 0.9rem; font-weight: bold; margin-top: 2px; opacity: 0.95; }
         
-        #error-message, #expired-message, #already-used-today, #used-message { display: none; padding: 40px 20px; }
-        .status-icon { font-size: 4rem; margin-bottom: 10px; display: block; }
+        .btn-outline {
+            background: #fff; color: var(--accent-dark); border: 2px solid var(--accent);
+            padding: 12px; font-size: 1rem; font-weight: 900; border-radius: 30px; 
+            box-shadow: 0 4px 0 var(--accent-dark); margin-bottom: 20px;
+            display: block; width: 100%; cursor: pointer;
+        }
+        .btn-outline:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-dark); }
+
+        .small-notice { font-size: 0.75rem; color: var(--warning); font-weight: bold; margin-top: 12px; line-height: 1.4; }
+
+        /* === 📱 モーダル（ポップアップ） === */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: none; justify-content: center;
+            align-items: center; z-index: 2000; padding: 20px; backdrop-filter: blur(4px);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .overlay.show { display: flex; opacity: 1; }
+        
+        .modal {
+            background: #fff; width: 100%; max-width: 340px; border-radius: 24px;
+            padding: 24px; text-align: center; border: 4px solid var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .overlay.show .modal { transform: translateY(0) scale(1); }
+
+        /* 使い方画像 */
+        .usage-img { width: 100%; max-width: 220px; border-radius: 12px; border: 1px solid #ddd; margin: 12px auto; display: block; }
+
+        /* === 📺 画面切り替え制御 === */
+        .screen { display: none; }
+        .active-screen { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .status-icon { font-size: 4rem; display: block; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -67,148 +167,239 @@
     <div class="ticket-container">
         <div class="header">テクモピア 公津の杜</div>
         
-        <div id="game-container" class="game-area">
-            <div id="ufo" class="ufo-crane swing">
-                <div class="crane-wire"></div>
-                <div class="crane-arm"></div>
-            </div>
-            <div id="target-bear" class="bear"><div class="bear-face"></div></div>
-        </div>
-
-        <div id="active-content" class="content">
-            <div class="benefit-content">🧸 クレーンゲーム<br>1回無料チケット</div>
+        <div class="content">
             
-            <div class="timer-box">
-                <div class="timer-label">有効期限（残り秒数）</div>
-                <div class="timer-value" id="seconds">---</div>
+            <div id="screen-step1" class="screen">
+                <div class="anti-fraud-bar"></div>
+                
+                <div class="promo-header">
+                    <span class="promo-sub">3階テクモピアで使える！</span>
+                    <h2 class="promo-main">クレーンゲーム1回無料券を<br>プレゼント！</h2>
+                </div>
+
+                <div style="background:#f1f8e9; padding:12px; border-radius:12px; color:#1b5e20; font-weight:900; font-size:0.95rem; line-height:1.4;">
+                    【ステップ 1】<br>3階カウンターのスタッフに<br>この画面を見せてください。
+                </div>
+
+                <div class="timer-box">
+                    <div class="timer-label">⏱️ 発券の有効期限</div>
+                    <div id="timer-p1" class="timer-value">05:00</div>
+                </div>
+
+                <button class="btn" onclick="openModal('confirm-issue')">
+                    <span class="btn-main-text">スタッフが確認</span>
+                    <span class="btn-sub-text">(クーポン発行)</span>
+                </button>
+                <div class="small-notice">注意：ここから先はスタッフが操作します。<br>お客様が押すと無効になる場合があります。</div>
             </div>
 
-            <div class="staff-only-notice">⚠️ ボタンはスタッフが操作します</div>
+            <div id="screen-step2" class="screen">
+                <div class="anti-fraud-bar" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #80deea 15px, #80deea 30px);"></div>
+                
+                <div id="ticket" class="ticket-box">
+                    <span class="ticket-label">発券完了</span>
+                    <h2 class="ticket-title">クレーンゲーム<br>1回無料</h2>
+                </div>
 
-            <div class="presentation-notice">
-                3階テクモピアのスタッフに<br>この画面をご提示ください
+                <button class="btn-outline" onclick="openModal('usage-modal')">
+                    ✨ クーポンの使いかたを見る
+                </button>
+
+                <div style="background:#e3f2fd; padding:12px; border-radius:12px; color:#1565c0; font-weight:900; font-size:0.95rem; line-height: 1.4;">
+                    【ステップ 2】<br>遊ぶ台を決めてスタッフを呼び、<br>この画面を見せてください。
+                </div>
+
+                <div class="timer-box" style="border-color: var(--accent);">
+                    <div class="timer-label" style="color:#b2ebf2;">⏱️ クーポンの利用期限</div>
+                    <div id="timer-p2" class="timer-value" style="color:#26a69a;">30:00</div>
+                </div>
+
+                <button id="use-btn" class="btn" style="background:linear-gradient(135deg, var(--accent), var(--accent-dark)); box-shadow: 0 6px 0 var(--accent-dark);" onclick="openModal('confirm-use')">
+                    <span class="btn-main-text" style="margin-top: 5px;">クーポンを使用</span>
+                </button>
+                <div class="small-notice">注意：必ずスタッフを呼んでから押してください。<br>事前にお客様自身で押すと無効となります。</div>
             </div>
 
-            <button id="use-button" class="use-button">特典を利用する</button>
-            <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">※お客さまが押すと無効になる場合があります</p>
-        </div>
+            <div id="screen-expired-p1" class="screen" style="padding: 40px 0;">
+                <span class="status-icon">⚠️</span>
+                <h3 style="font-weight:900; color:#333;">発券期限が切れました</h3>
+                <p style="font-weight:bold; color:#666; font-size:0.9rem;">もう一度二次元コードを<br>読み取るところからやり直してね。</p>
+            </div>
 
-        <div id="error-message" class="content">
-            <span class="status-icon">⚠️</span>
-            <div class="benefit-content">アクセス無効</div>
-            <p>二次元コードから読み直してください。</p>
+            <div id="screen-expired-p2" class="screen" style="padding: 40px 0;">
+                <span class="status-icon">❌</span>
+                <h3 style="font-weight:900; color:#333;">利用期限が切れました</h3>
+                <p style="font-weight:bold; color:#666; font-size:0.9rem;">30分を過ぎたため、<br>このクーポンは消失しました。</p>
+            </div>
+
+            <div id="screen-already" class="screen" style="padding: 40px 0;">
+                <span class="status-icon">🌟</span>
+                <h3 style="font-weight:900; color:#333;">本日は利用済みです</h3>
+                <p style="font-weight:bold; color:#666; font-size:0.9rem;">このクーポンの利用は1日1回までです。<br>また明日遊びに来てね！🧸</p>
+            </div>
+
         </div>
-        <div id="expired-message" class="content">
-            <span class="status-icon">⏰</span>
-            <div class="benefit-content" style="color: #999;">有効期限切れ</div>
-            <p>制限時間を過ぎました。<br>もう一度やり直してね！</p>
+    </div>
+
+    <div id="confirm-issue" class="overlay">
+        <div class="modal">
+            <h3 style="color:var(--warning); font-weight:900; margin-top:0;">スタッフ専用確認</h3>
+            <p style="font-weight:bold; line-height:1.5; color:#444;">お客様が3階カウンターに<br>到着したことを確認しましたか？</p>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn" style="padding:12px; font-size:1rem; box-shadow:0 4px 0 var(--primary-dark);" onclick="issueTicket()"><span class="btn-main-text">はい(発券)</span></button>
+                <button class="btn" style="background:#e0e0e0; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #9e9e9e;" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
+            </div>
         </div>
-        <div id="already-used-today" class="content">
-            <span class="status-icon">✨</span>
-            <div class="benefit-content">本日は使用済み</div>
-            <p>また明日、遊びに来てね！🧸</p>
+    </div>
+
+    <div id="confirm-use" class="overlay">
+        <div class="modal">
+            <h3 style="color:var(--accent); font-weight:900; margin-top:0;">クーポンを使用します</h3>
+            <p style="font-weight:bold; line-height:1.5; color:#444;">クーポンを使用するゲーム機を決め、<br>スタッフに確認しましたか？</p>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn" style="background:var(--accent); box-shadow:0 4px 0 var(--accent-dark); padding:12px; font-size:1rem;" onclick="executeUse()"><span class="btn-main-text">はい(使用)</span></button>
+                <button class="btn" style="background:#e0e0e0; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #9e9e9e;" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
+            </div>
         </div>
-        <div id="used-message" class="content">
-            <span class="status-icon">🎉</span>
-            <div class="benefit-content" style="color: #4caf50;">特典GET！</div>
-            <p style="font-weight: bold; font-size: 1.1rem;">スタッフにこの画面を<br>見せてください。</p>
-            <p id="closing-notice" style="font-size: 0.7rem; color: #f44336; margin-top: 20px; font-weight: bold;">※不正防止のため、間もなく画面を終了します</p>
+    </div>
+
+    <div id="usage-modal" class="overlay">
+        <div class="modal" style="text-align:left; max-width:340px; padding: 25px 20px;">
+            <h3 style="text-align:center; color:var(--accent-dark); font-weight:900; margin:0 0 15px 0; background:#e0f7fa; padding:8px; border-radius:10px;">✨ 使いかた ✨</h3>
+            <p style="font-size:0.95rem; font-weight:bold; margin:10px 0; color:#333;">① 遊びたいクレーンゲーム機を選びます。</p>
+            <p style="font-size:0.8rem; color:var(--primary); font-weight:bold; margin-left:1.2em;">※下のマークがある台が対象です。</p>
+            
+            <img src="https://raw.githubusercontent.com/tecmopia-kozunomori/special-gift/refs/heads/main/1play.png" class="usage-img" alt="1playマーク">
+            
+            <p style="font-size:0.95rem; font-weight:bold; margin:15px 0 10px; color:#333;">② 場所が決まったらスタッフをお呼びください。</p>
+            <p style="font-size:0.95rem; font-weight:bold; margin:10px 0; color:#333;">③ スタッフの前で「クーポンを使用」を押します。</p>
+            
+            <button class="btn" style="background:#eee; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #ccc; margin-top:20px;" onclick="closeModal()"><span class="btn-main-text">とじる</span></button>
         </div>
     </div>
 
     <script>
-        const LIMIT_SECONDS = 300;
-        const today = new Date().toLocaleDateString('ja-JP');
-        const gasUrl = 'https://script.google.com/macros/s/AKfycbwifMNGEICMZEAGSi0xwBJgyP-ekGUfuUkU_vmbHOIddJ-GEMeVS3sjyUxXYDKAQGAf/exec';
+        // === 設定値 ===
+        const P1_LIMIT = 300;  // フェーズ1（発券）: 5分
+        const P2_LIMIT = 1800; // フェーズ2（利用）: 30分
+        
+        // ★GASのURL（ダッシュボード送信用）
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwcOSujT-Qqivo7Ghob53_0PxsQWnqsAkEk83539NfmckHzA3Z2gf5Y0dUNJ1jvdeXV/exec';
+        
+        let timer = null;
 
-        const ufo = document.getElementById('ufo');
-        const bear = document.getElementById('target-bear');
-        const activeContent = document.getElementById('active-content');
-        const gameContainer = document.getElementById('game-container');
-
-        // デバイスロック機能
-        let deviceId = localStorage.getItem('tecmopia_id');
-        if (!deviceId) {
-            deviceId = Math.random().toString(36).substring(2, 10);
-            localStorage.setItem('tecmopia_id', deviceId);
-        }
-        if (!window.location.hash) {
-            window.location.replace(window.location.href + "#" + deviceId);
-        } else if (window.location.hash !== "#" + deviceId) {
-            activeContent.style.display = 'none';
-            gameContainer.style.display = 'none';
-            document.getElementById('error-message').style.display = 'block';
-            throw new Error("Lock active");
+        function getToday() {
+            return new Date().toLocaleDateString('ja-JP');
         }
 
-        // 本日の利用済みチェック
-        if (localStorage.getItem('tecmopia_used') === today) {
-            activeContent.style.display = 'none';
-            gameContainer.style.display = 'none';
-            document.getElementById('already-used-today').style.display = 'block';
-        } else {
-            let start = sessionStorage.getItem('tecmopia_start');
-            if (!start) {
-                start = Date.now();
-                sessionStorage.setItem('tecmopia_start', start);
+        window.onload = function() {
+            // 当日利用済みチェック（絶対ロック）
+            if (localStorage.getItem('tp_used') === getToday()) {
+                showScreen('screen-already');
+                return;
             }
 
-            const timer = setInterval(() => {
+            // フェーズ復元
+            const phase = sessionStorage.getItem('tp_phase') || 'p1';
+            if (phase === 'p1') {
+                showScreen('screen-step1');
+                startTimer('tp_p1_start', P1_LIMIT, 'timer-p1', 'screen-expired-p1');
+            } else {
+                showScreen('screen-step2');
+                startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
+            }
+        };
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+            document.getElementById(id).classList.add('active-screen');
+        }
+
+        function startTimer(storageKey, limit, elementId, expiredScreenId) {
+            if (timer) clearInterval(timer);
+            
+            let start = sessionStorage.getItem(storageKey);
+            if (!start) {
+                start = Date.now();
+                sessionStorage.setItem(storageKey, start);
+            }
+
+            const el = document.getElementById(elementId);
+            
+            timer = setInterval(() => {
                 const now = Date.now();
-                const left = LIMIT_SECONDS - Math.floor((now - start) / 1000);
+                const diff = Math.floor((now - start) / 1000);
+                const left = limit - diff;
+
                 if (left <= 0) {
                     clearInterval(timer);
-                    activeContent.style.display = 'none';
-                    gameContainer.style.display = 'none';
-                    document.getElementById('expired-message').style.display = 'block';
-                    sessionStorage.removeItem('tecmopia_start');
+                    if(el) el.textContent = "00:00";
+                    sessionStorage.clear(); // 期限切れでセッションを完全リセット
+                    showScreen(expiredScreenId);
                     return;
                 }
-                document.getElementById('seconds').textContent = left.toString().padStart(3, '0');
-            }, 1000);
 
-            document.getElementById('use-button').onclick = function() {
-                if (confirm('【スタッフ専用確認】\nスタッフが利用を確認しましたか？')) {
-                    clearInterval(timer);
-                    localStorage.setItem('tecmopia_used', today); // 翌日のリロード対策
-
-                    fetch(`${gasUrl}?t=${Date.now()}`, { mode: 'no-cors' });
-                    
-                    this.style.visibility = 'hidden';
-                    ufo.classList.remove('swing');
-                    ufo.style.left = "50%";
-                    
-                    setTimeout(() => {
-                        ufo.style.top = "70px";
-                        ufo.classList.add('catching');
-                        
-                        setTimeout(() => {
-                            ufo.style.top = "0px";
-                            bear.style.bottom = "85px";
-                            
-                            setTimeout(() => {
-                                activeContent.style.display = 'none';
-                                document.getElementById('used-message').style.display = 'block';
-
-                                // --- 最強の不正防止対策 ---
-                                // 3秒後に「中身を全消去」して永久ロック状態にする
-                                setTimeout(() => {
-                                    document.body.innerHTML = `
-                                        <div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#eee; text-align:center; padding:20px; font-family:sans-serif;">
-                                            <div>
-                                                <span style="font-size:4rem;">✅</span>
-                                                <p style="font-weight:bold; color:#333; font-size:1.2rem;">利用が完了しました。</p>
-                                                <p style="color:#666; font-size:0.9rem;">この画面はもう使えません。<br>タブを閉じてください。</p>
-                                                <p style="color:#d32f2f; font-size:0.8rem; margin-top:20px; font-weight:bold;">※再度利用するには、明日以降に<br>二次元コードを読み直す必要があります。</p>
-                                            </div>
-                                        </div>`;
-                                }, 3000);
-
-                            }, 1000);
-                        }, 1000);
-                    }, 600);
+                if(el) {
+                    const m = String(Math.floor(left / 60)).padStart(2, '0');
+                    const s = String(left % 60).padStart(2, '0');
+                    el.textContent = `${m}:${s}`;
                 }
-            };
+            }, 1000);
+        }
+
+        function openModal(id) { 
+            const overlay = document.getElementById(id);
+            overlay.style.display = 'flex';
+            // 少し遅らせてクラスを付けることでCSSアニメーションを発火させる
+            setTimeout(() => overlay.classList.add('show'), 10);
+        }
+        
+        function closeModal() { 
+            document.querySelectorAll('.overlay').forEach(o => {
+                o.classList.remove('show');
+                // アニメーションが終わってから非表示にする
+                setTimeout(() => { o.style.display = 'none'; }, 300);
+            });
+        }
+
+        // スタッフが発券ボタンを押した
+        function issueTicket() {
+            closeModal();
+            sessionStorage.setItem('tp_phase', 'p2');
+            sessionStorage.removeItem('tp_p1_start'); // P1タイマー破棄
+            showScreen('screen-step2');
+            startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
+        }
+
+        // クーポン使用実行
+        function executeUse() {
+            closeModal();
+            clearInterval(timer); // タイマー停止
+            
+            // チケットにUSEDスタンプを押す
+            document.getElementById('ticket').classList.add('used');
+            document.getElementById('use-btn').disabled = true;
+            document.getElementById('use-btn').style.opacity = '0.5';
+            
+            // 当日利用ロック
+            localStorage.setItem('tp_used', getToday()); 
+            sessionStorage.setItem('tp_phase', 'used');
+
+            // GASへデータ送信（ダッシュボード連携）
+            fetch(`${GAS_URL}?t=${Date.now()}`, { mode: 'no-cors' }).catch(e => console.log(e));
+
+            // 最強の不正防止：3秒後に画面を完全フリーズ＆テキスト差し替え
+            setTimeout(() => {
+                document.body.innerHTML = `
+                <div style="text-align:center; padding:40px 20px; font-family:sans-serif; width:100%;">
+                    <span style="font-size:5rem;">✅</span>
+                    <h2 style="font-weight:900; color:#333;">クーポン利用完了</h2>
+                    <p style="font-weight:bold; color:#666; line-height:1.5;">この画面はもう使えません。<br>タブを完全に閉じてください。</p>
+                    <div style="background:#fff; border:2px solid #ccc; padding:15px; border-radius:12px; margin-top:30px;">
+                        <p style="color:#d32f2f; font-size:0.85rem; font-weight:bold; margin:0;">※再度利用するには、明日以降に<br>二次元コードを読み直す必要があります。</p>
+                    </div>
+                </div>`;
+            }, 3000);
         }
     </script>
 </body>
