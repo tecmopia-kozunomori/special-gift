@@ -266,6 +266,12 @@
                 <p style="font-weight:bold; color:#666; font-size:0.9rem;">このクーポンの利用は1日1回までです。<br>また明日遊びに来てね！🧸</p>
             </div>
 
+            <div id="screen-shared" class="screen" style="padding: 40px 0;">
+                <span class="status-icon">🚫</span>
+                <h3 style="font-weight:900; color:#333;">直接アクセスできません</h3>
+                <p style="font-weight:bold; color:#666; font-size:0.9rem;">このページは共有されたリンクからは<br>開くことができません。<br>2階の二次元コードから読み取ってね。</p>
+            </div>
+
         </div>
     </div>
 
@@ -321,6 +327,17 @@
         }
 
         window.onload = function() {
+            // 🚨 新規追加：URL共有ブロック処理
+            if (window.location.search.length > 0) {
+                showScreen('screen-shared');
+                return; // 共有URLならここで処理を止める
+            }
+
+            // 正規アクセスなら開いた瞬間にダミーのパラメーターをURLに付与
+            const randomStr = Math.random().toString(36).substring(2, 10);
+            window.history.replaceState(null, '', '?ticket=' + randomStr);
+            // ===================================
+
             // 当日利用済みチェック（絶対ロック）
             if (localStorage.getItem('tp_used') === getToday()) {
                 showScreen('screen-already');
