@@ -56,13 +56,20 @@
 
         .content { padding: 0 20px 24px; }
 
-        /* === 🎁 1ページ目：ワクワク見出し === */
+        /* === 🎁 1ページ目：超ド派手なワクワク見出し === */
         .promo-header { margin: 15px 0 25px; animation: bouncePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .promo-sub { font-size: 1.1rem; color: #e65100; font-weight: 900; display: block; margin-bottom: 5px; }
+        .promo-sub {
+            font-size: 1.05rem; color: #fff; font-weight: 900; display: inline-block;
+            background: #ff9800; padding: 4px 16px; border-radius: 30px;
+            margin-bottom: 10px; box-shadow: 0 4px 0 #ef6c00;
+            letter-spacing: 1px;
+        }
         .promo-main { 
-            font-size: 1.6rem; color: #d84315; font-weight: 900; line-height: 1.4;
-            background: linear-gradient(transparent 60%, #fff9c4 60%); display: inline;
-            text-shadow: 1px 1px 0px #ffe0b2;
+            font-size: 1.9rem; /* スマホでガツンと見える特大サイズ */
+            color: #d84315; font-weight: 900; line-height: 1.35;
+            background: linear-gradient(transparent 50%, #fff9c4 50%); display: inline-block;
+            text-shadow: 2px 2px 0px #ffe0b2, 0 4px 10px rgba(255, 64, 129, 0.2);
+            margin: 0; padding: 0 5px;
         }
         @keyframes bouncePop {
             0% { transform: scale(0.5); opacity: 0; }
@@ -77,10 +84,10 @@
             padding: 25px 15px; margin: 20px 0; position: relative; overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        /* キラッと光るエフェクト */
+        /* ✨ 強化版・キラッと光るシャインエフェクト */
         .ticket-box::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg); animation: shine 3s infinite; z-index: 1;
         }
         @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
@@ -120,17 +127,38 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             line-height: 1.2;
         }
-        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--primary-dark); }
+        .btn:active { transform: translateY(4px) scale(0.98); box-shadow: 0 2px 0 var(--primary-dark); animation: none; }
         .btn-main-text { font-size: 1.3rem; font-weight: 900; }
         .btn-sub-text { font-size: 0.9rem; font-weight: bold; margin-top: 2px; opacity: 0.95; }
         
+        /* 🚨 強調アニメーション：脈打ち（ピコンピコン） */
+        @keyframes pulse-main {
+            0% { transform: scale(1); box-shadow: 0 6px 0 var(--accent-dark); }
+            50% { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0, 188, 212, 0.4), 0 6px 0 var(--accent-dark); }
+            100% { transform: scale(1); box-shadow: 0 6px 0 var(--accent-dark); }
+        }
+        
+        @keyframes pulse-outline {
+            0% { transform: scale(1); box-shadow: 0 4px 0 var(--accent-dark); }
+            50% { transform: scale(1.03); box-shadow: 0 6px 12px rgba(0, 188, 212, 0.3), 0 4px 0 var(--accent-dark); }
+            100% { transform: scale(1); box-shadow: 0 4px 0 var(--accent-dark); }
+        }
+
+        .use-btn-animated {
+            animation: pulse-main 2s infinite;
+        }
+
         .btn-outline {
             background: #fff; color: var(--accent-dark); border: 2px solid var(--accent);
             padding: 12px; font-size: 1rem; font-weight: 900; border-radius: 30px; 
             box-shadow: 0 4px 0 var(--accent-dark); margin-bottom: 20px;
             display: block; width: 100%; cursor: pointer;
+            animation: pulse-outline 2.5s infinite; /* 使いかたボタンも動かす */
         }
-        .btn-outline:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-dark); }
+        .btn-outline:active { transform: translateY(3px) scale(0.98); box-shadow: 0 1px 0 var(--accent-dark); animation: none; }
+
+        /* ボタン無効時はアニメーション停止 */
+        .btn:disabled { animation: none !important; transform: none !important; }
 
         .small-notice { font-size: 0.75rem; color: var(--warning); font-weight: bold; margin-top: 12px; line-height: 1.4; }
 
@@ -174,7 +202,7 @@
                 
                 <div class="promo-header">
                     <span class="promo-sub">3階テクモピアで使える！</span>
-                    <h2 class="promo-main">クレーンゲーム1回無料券を<br>プレゼント！</h2>
+                    <h2 class="promo-main">クレーンゲーム<br>1回無料券を<br>プレゼント！</h2>
                 </div>
 
                 <div style="background:#f1f8e9; padding:12px; border-radius:12px; color:#1b5e20; font-weight:900; font-size:0.95rem; line-height:1.4;">
@@ -214,7 +242,7 @@
                     <div id="timer-p2" class="timer-value" style="color:#26a69a;">30:00</div>
                 </div>
 
-                <button id="use-btn" class="btn" style="background:linear-gradient(135deg, var(--accent), var(--accent-dark)); box-shadow: 0 6px 0 var(--accent-dark);" onclick="openModal('confirm-use')">
+                <button id="use-btn" class="btn use-btn-animated" style="background:linear-gradient(135deg, var(--accent), var(--accent-dark));" onclick="openModal('confirm-use')">
                     <span class="btn-main-text" style="margin-top: 5px;">クーポンを使用</span>
                 </button>
                 <div class="small-notice">注意：必ずスタッフを呼んでから押してください。<br>事前にお客様自身で押すと無効となります。</div>
@@ -378,8 +406,12 @@
             
             // チケットにUSEDスタンプを押す
             document.getElementById('ticket').classList.add('used');
-            document.getElementById('use-btn').disabled = true;
-            document.getElementById('use-btn').style.opacity = '0.5';
+            
+            // 使用ボタンの無効化（アニメーションも止まる）
+            const useBtn = document.getElementById('use-btn');
+            useBtn.classList.remove('use-btn-animated');
+            useBtn.disabled = true;
+            useBtn.style.opacity = '0.5';
             
             // 当日利用ロック
             localStorage.setItem('tp_used', getToday()); 
