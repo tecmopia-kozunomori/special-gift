@@ -56,7 +56,7 @@
 
         .content { padding: 0 20px 24px; }
 
-        /* === 🎁 1ページ目：超ド派手なワクワク見出し === */
+        /* === 🎁 見出しアニメーション === */
         .promo-header { margin: 15px 0 25px; animation: bouncePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .promo-sub {
             font-size: 1.05rem; color: #fff; font-weight: 900; display: inline-block;
@@ -131,7 +131,6 @@
         .btn-main-text { font-size: 1.3rem; font-weight: 900; }
         .btn-sub-text { font-size: 0.9rem; font-weight: bold; margin-top: 2px; opacity: 0.95; }
         
-        /* 🚨 強調アニメーション：脈打ち（ピコンピコン） */
         @keyframes pulse-main {
             0% { transform: scale(1); box-shadow: 0 6px 0 var(--accent-dark); }
             50% { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0, 188, 212, 0.4), 0 6px 0 var(--accent-dark); }
@@ -157,7 +156,7 @@
 
         .small-notice { font-size: 0.75rem; color: var(--warning); font-weight: bold; margin-top: 12px; line-height: 1.4; }
 
-        /* === 📱 モーダル（ポップアップ） === */
+        /* === 📱 モーダル === */
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); display: none; justify-content: center;
@@ -173,9 +172,11 @@
             transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .overlay.show .modal { transform: translateY(0) scale(1); }
+        .modal-btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-btn-group .btn { flex: 1; }
         .usage-img { width: 100%; max-width: 220px; border-radius: 12px; border: 1px solid #ddd; margin: 12px auto; display: block; }
 
-        /* === 📺 画面切り替え制御 === */
+        /* === 📺 画面制御 === */
         .screen { display: none; }
         .active-screen { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -263,7 +264,7 @@
         <div class="modal">
             <h3 style="color:var(--warning); font-weight:900; margin-top:0;">スタッフ専用確認</h3>
             <p style="font-weight:bold; line-height:1.5; color:#444;">お客様が3階カウンターに<br>到着したことを確認しましたか？</p>
-            <div style="display:flex; gap:10px; margin-top:20px;">
+            <div class="modal-btn-group">
                 <button class="btn" style="padding:12px; font-size:1rem; box-shadow:0 4px 0 var(--primary-dark);" onclick="issueTicket()"><span class="btn-main-text">はい(発券)</span></button>
                 <button class="btn" style="background:#e0e0e0; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #9e9e9e;" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
             </div>
@@ -274,7 +275,7 @@
         <div class="modal">
             <h3 style="color:var(--accent); font-weight:900; margin-top:0;">クーポンを使用します</h3>
             <p style="font-weight:bold; line-height:1.5; color:#444;">クーポンを使用するゲーム機を決め、<br>スタッフに確認しましたか？</p>
-            <div style="display:flex; gap:10px; margin-top:20px;">
+            <div class="modal-btn-group">
                 <button class="btn" style="background:var(--accent); box-shadow:0 4px 0 var(--accent-dark); padding:12px; font-size:1rem;" onclick="executeUse()"><span class="btn-main-text">はい(使用)</span></button>
                 <button class="btn" style="background:#e0e0e0; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #9e9e9e;" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
             </div>
@@ -296,13 +297,10 @@
         </div>
     </div>
 
-    /* 🛠️ 安全強化・修正済みスクリプト */
     <script>
-        // === 設定値 ===
-        const P1_LIMIT = 300;  // フェーズ1（発券）: 5分
-        const P2_LIMIT = 1800; // フェーズ2（利用）: 30分
+        const P1_LIMIT = 300;  
+        const P2_LIMIT = 1800; 
         
-        // ★GASのURL（ダッシュボード送信用）
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbwcOSujT-Qqivo7Ghob53_0PxsQWnqsAkEk83539NfmckHzA3Z2gf5Y0dUNJ1jvdeXV/exec';
         
         let timer = null;
@@ -317,53 +315,55 @@
                 const token = params.get('token');
                 const today = getToday();
 
-                // 🚨 1. 二次元コードからの正規アクセス判定を最優先
+                // 🚨 1. QRコードからの正規アクセス時の処理
                 if (token === 'secret123') {
-                    // 本日の利用許可フラグを保存
                     localStorage.setItem('tp_auth_' + today, 'true');
                     
-                    // パラメータ書き換え（PCテスト環境等のエラー対策付き）
+                    const currentPhase = localStorage.getItem('tp_phase_' + today);
+                    // まだ開始していないか、発券前(p1)で時間切れになった場合のみリセットして初期化
+                    if (!currentPhase || currentPhase === 'p1' || currentPhase === 'expired-p1') {
+                        localStorage.setItem('tp_phase_' + today, 'p1');
+                        localStorage.removeItem('tp_p1_start_' + today);
+                    }
+                    
                     try {
                         const randomStr = Math.random().toString(36).substring(2, 10);
                         window.history.replaceState(null, '', '?ticket=' + randomStr);
                     } catch(e) {
-                        console.warn('ローカル環境のためURL書き換えをスキップしました');
+                        console.warn('URL書き換えコピー制限スキップ');
                     }
                 } else if (window.location.search.length > 0 && !params.has('ticket')) {
-                    // トークンがなく、正規ダミーチケットでもない「怪しいパラメータ」はブロック
                     showScreen('screen-shared');
                     return;
                 }
 
-                // 🚨 2. 当日利用済みチェック（絶対ロック）
-                if (localStorage.getItem('tp_used') === today) {
-                    showScreen('screen-already');
-                    return;
-                }
-
-                // 🚨 3. 本日の正規アクセス履歴があるかチェック
+                // 🚨 2. 本日の正規アクセス認証があるかチェック
                 if (localStorage.getItem('tp_auth_' + today) !== 'true') {
                     showScreen('screen-shared');
                     return;
                 }
 
-                // 🚨 4. 問題なければフェーズ状態の復元
-                const phase = sessionStorage.getItem('tp_phase') || 'p1';
+                // 🚨 3. ローカルストレージに保存された「現在の状態」から画面を完全復元
+                const phase = localStorage.getItem('tp_phase_' + today) || 'p1';
+                
                 if (phase === 'p1') {
                     showScreen('screen-step1');
-                    startTimer('tp_p1_start', P1_LIMIT, 'timer-p1', 'screen-expired-p1');
+                    startTimer('tp_p1_start_' + today, P1_LIMIT, 'timer-p1', 'screen-expired-p1', 'expired-p1');
                 } else if (phase === 'p2') {
                     showScreen('screen-step2');
-                    startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
-                } else {
+                    startTimer('tp_p2_start_' + today, P2_LIMIT, 'timer-p2', 'screen-expired-p2', 'expired-p2');
+                } else if (phase === 'used') {
                     showScreen('screen-already');
+                } else if (phase === 'expired-p1') {
+                    showScreen('screen-expired-p1');
+                } else if (phase === 'expired-p2') {
+                    showScreen('screen-expired-p2');
                 }
 
             } catch(error) {
-                // 万が一の安全装置：予期せぬエラーでも画面を真っ白にせずステップ1を強制表示
-                console.error("システム調整:", error);
+                console.error("システム復旧モード:", error);
                 showScreen('screen-step1');
-                startTimer('tp_p1_start', P1_LIMIT, 'timer-p1', 'screen-expired-p1');
+                startTimer('tp_p1_start_' + getToday(), P1_LIMIT, 'timer-p1', 'screen-expired-p1', 'expired-p1');
             }
         };
 
@@ -373,13 +373,13 @@
             if (target) target.classList.add('active-screen');
         }
 
-        function startTimer(storageKey, limit, elementId, expiredScreenId) {
+        function startTimer(storageKey, limit, elementId, expiredScreenId, expiredPhaseValue) {
             if (timer) clearInterval(timer);
             
-            let start = sessionStorage.getItem(storageKey);
+            let start = localStorage.getItem(storageKey);
             if (!start) {
                 start = Date.now();
-                sessionStorage.setItem(storageKey, start);
+                localStorage.setItem(storageKey, start);
             }
 
             const el = document.getElementById(elementId);
@@ -390,10 +390,8 @@
                 const left = limit - diff;
                 const today = getToday();
 
-                // リアルタイム自動ロック（日付を跨いだ場合など）
                 if (localStorage.getItem('tp_auth_' + today) !== 'true') {
                     clearInterval(timer);
-                    sessionStorage.clear();
                     showScreen('screen-shared');
                     return;
                 }
@@ -401,7 +399,7 @@
                 if (left <= 0) {
                     clearInterval(timer);
                     if(el) el.textContent = "00:00";
-                    sessionStorage.clear(); // 期限切れでセッションリセット
+                    localStorage.setItem('tp_phase_' + today, expiredPhaseValue);
                     showScreen(expiredScreenId);
                     return;
                 }
@@ -429,47 +427,56 @@
             });
         }
 
-        // スタッフが発券ボタンを押した
         function issueTicket() {
             closeModal();
             const today = getToday();
 
-            // 実行前の最終防衛チェック
             if (localStorage.getItem('tp_auth_' + today) !== 'true') {
                 alert("クーポンを発行するには、再度二次元コードを読み込んでください。");
                 showScreen('screen-shared');
                 return;
             }
-            if (localStorage.getItem('tp_used') === today) {
+
+            const currentPhase = localStorage.getItem('tp_phase_' + today);
+            if (currentPhase === 'used') {
                 alert("本日は既に使用済みです。");
                 showScreen('screen-already');
                 return;
             }
+            if (currentPhase === 'expired-p2') {
+                alert("利用期限が切れています。");
+                showScreen('screen-expired-p2');
+                return;
+            }
 
-            sessionStorage.setItem('tp_phase', 'p2');
-            sessionStorage.removeItem('tp_p1_start'); // P1タイマー破棄
+            localStorage.setItem('tp_phase_' + today, 'p2');
             showScreen('screen-step2');
-            startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
+            startTimer('tp_p2_start_' + today, P2_LIMIT, 'timer-p2', 'screen-expired-p2', 'expired-p2');
         }
 
-        // クーポン使用実行
         function executeUse() {
             closeModal();
             const today = getToday();
 
-            // ボタン押下時の最終防衛チェック
             if (localStorage.getItem('tp_auth_' + today) !== 'true') {
                 alert("クーポンを利用するには、再度二次元コードを読み込んでください。");
                 showScreen('screen-shared');
                 return;
             }
-            if (localStorage.getItem('tp_used') === today) {
+
+            const currentPhase = localStorage.getItem('tp_phase_' + today);
+            if (currentPhase === 'used') {
                 alert("本日は既に使用済みです。");
                 showScreen('screen-already');
                 return;
             }
+            if (currentPhase === 'expired-p2') {
+                alert("利用期限が切れています。");
+                showScreen('screen-expired-p2');
+                return;
+            }
 
-            clearInterval(timer); // タイマー停止
+            clearInterval(timer); 
             
             const ticketEl = document.getElementById('ticket');
             if (ticketEl) ticketEl.classList.add('used');
@@ -481,13 +488,10 @@
                 useBtn.style.opacity = '0.5';
             }
             
-            localStorage.setItem('tp_used', today); 
-            sessionStorage.setItem('tp_phase', 'used');
+            localStorage.setItem('tp_phase_' + today, 'used'); 
 
-            // GASへデータ送信（ダッシュボード連携）
             fetch(`${GAS_URL}?t=${Date.now()}`, { mode: 'no-cors' }).catch(e => console.log(e));
 
-            // 不正防止：3秒後に画面を完全フリーズ＆テキスト差し替え
             setTimeout(() => {
                 document.body.innerHTML = `
                 <div style="text-align:center; padding:40px 20px; font-family:sans-serif; width:100%;">
