@@ -65,7 +65,7 @@
             letter-spacing: 1px;
         }
         .promo-main { 
-            font-size: 1.9rem; /* スマホでガツンと見える特大サイズ */
+            font-size: 1.9rem; 
             color: #d84315; font-weight: 900; line-height: 1.35;
             background: linear-gradient(transparent 50%, #fff9c4 50%); display: inline-block;
             text-shadow: 2px 2px 0px #ffe0b2, 0 4px 10px rgba(255, 64, 129, 0.2);
@@ -84,7 +84,7 @@
             padding: 25px 15px; margin: 20px 0; position: relative; overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        /* ✨ 強化版・キラッと光るシャインエフェクト */
+        /* ✨ キラッと光るシャインエフェクト */
         .ticket-box::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
@@ -92,7 +92,7 @@
         }
         @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
-        /* ガシャン！と押されるUSEDスタンプ */
+        /* USEDスタンプ */
         .ticket-box.used::after {
             content: 'USED'; position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) rotate(-20deg);
@@ -144,20 +144,15 @@
             100% { transform: scale(1); box-shadow: 0 4px 0 var(--accent-dark); }
         }
 
-        .use-btn-animated {
-            animation: pulse-main 2s infinite;
-        }
-
+        .use-btn-animated { animation: pulse-main 2s infinite; }
         .btn-outline {
             background: #fff; color: var(--accent-dark); border: 2px solid var(--accent);
             padding: 12px; font-size: 1rem; font-weight: 900; border-radius: 30px; 
             box-shadow: 0 4px 0 var(--accent-dark); margin-bottom: 20px;
             display: block; width: 100%; cursor: pointer;
-            animation: pulse-outline 2.5s infinite; /* 使いかたボタンも動かす */
+            animation: pulse-outline 2.5s infinite;
         }
         .btn-outline:active { transform: translateY(3px) scale(0.98); box-shadow: 0 1px 0 var(--accent-dark); animation: none; }
-
-        /* ボタン無効時はアニメーション停止 */
         .btn:disabled { animation: none !important; transform: none !important; }
 
         .small-notice { font-size: 0.75rem; color: var(--warning); font-weight: bold; margin-top: 12px; line-height: 1.4; }
@@ -178,8 +173,6 @@
             transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .overlay.show .modal { transform: translateY(0) scale(1); }
-
-        /* 使い方画像 */
         .usage-img { width: 100%; max-width: 220px; border-radius: 12px; border: 1px solid #ddd; margin: 12px auto; display: block; }
 
         /* === 📺 画面切り替え制御 === */
@@ -199,21 +192,17 @@
             
             <div id="screen-step1" class="screen">
                 <div class="anti-fraud-bar"></div>
-                
                 <div class="promo-header">
                     <span class="promo-sub">3階テクモピアで使える！</span>
                     <h2 class="promo-main">クレーンゲーム<br>1回無料券を<br>プレゼント！</h2>
                 </div>
-
                 <div style="background:#f1f8e9; padding:12px; border-radius:12px; color:#1b5e20; font-weight:900; font-size:0.95rem; line-height:1.4;">
                     【ステップ 1】<br>3階カウンターのスタッフに<br>この画面を見せてください。
                 </div>
-
                 <div class="timer-box">
                     <div class="timer-label">⏱️ 発券の有効期限</div>
                     <div id="timer-p1" class="timer-value">05:00</div>
                 </div>
-
                 <button class="btn" onclick="openModal('confirm-issue')">
                     <span class="btn-main-text">スタッフが確認</span>
                     <span class="btn-sub-text">(クーポン発行)</span>
@@ -223,25 +212,20 @@
 
             <div id="screen-step2" class="screen">
                 <div class="anti-fraud-bar" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #80deea 15px, #80deea 30px);"></div>
-                
                 <div id="ticket" class="ticket-box">
                     <span class="ticket-label">発券完了</span>
                     <h2 class="ticket-title">クレーンゲーム<br>1回無料</h2>
                 </div>
-
                 <button class="btn-outline" onclick="openModal('usage-modal')">
                     ✨ クーポンの使いかたを見る
                 </button>
-
                 <div style="background:#e3f2fd; padding:12px; border-radius:12px; color:#1565c0; font-weight:900; font-size:0.95rem; line-height: 1.4;">
                     【ステップ 2】<br>遊ぶ台を決めてスタッフを呼び、<br>この画面を見せてください。
                 </div>
-
                 <div class="timer-box" style="border-color: var(--accent);">
                     <div class="timer-label" style="color:#b2ebf2;">⏱️ クーポンの利用期限</div>
                     <div id="timer-p2" class="timer-value" style="color:#26a69a;">30:00</div>
                 </div>
-
                 <button id="use-btn" class="btn use-btn-animated" style="background:linear-gradient(135deg, var(--accent), var(--accent-dark));" onclick="openModal('confirm-use')">
                     <span class="btn-main-text" style="margin-top: 5px;">クーポンを使用</span>
                 </button>
@@ -312,6 +296,7 @@
         </div>
     </div>
 
+    /* 🛠️ 安全強化・修正済みスクリプト */
     <script>
         // === 設定値 ===
         const P1_LIMIT = 300;  // フェーズ1（発券）: 5分
@@ -327,52 +312,65 @@
         }
 
         window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const token = params.get('token');
-            const today = getToday();
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const token = params.get('token');
+                const today = getToday();
 
-            // 🚨 【新規】QRコード（二次元コード）からの正規アクセス判定
-            if (token === 'secret123') {
-                // 正規アクセスなら、今日の「利用権利フラグ」を保存
-                localStorage.setItem('tp_gift_authorized_' + today, 'true');
-                
-                // 開いた瞬間にトークンURLを隠すためダミーパラメーターに書き換え（URL共有＆リロード防止）
-                const randomStr = Math.random().toString(36).substring(2, 10);
-                window.history.replaceState(null, '', '?ticket=' + randomStr);
-            } else if (window.location.search.length > 0 && !params.has('ticket')) {
-                // tokenがなく、かつ正規のダミーパラメータ（ticket）でもない場合は共有URLとみなしブロック
-                showScreen('screen-shared');
-                return;
-            }
+                // 🚨 1. 二次元コードからの正規アクセス判定を最優先
+                if (token === 'secret123') {
+                    // 本日の利用許可フラグを保存
+                    localStorage.setItem('tp_auth_' + today, 'true');
+                    
+                    // パラメータ書き換え（PCテスト環境等のエラー対策付き）
+                    try {
+                        const randomStr = Math.random().toString(36).substring(2, 10);
+                        window.history.replaceState(null, '', '?ticket=' + randomStr);
+                    } catch(e) {
+                        console.warn('ローカル環境のためURL書き換えをスキップしました');
+                    }
+                } else if (window.location.search.length > 0 && !params.has('ticket')) {
+                    // トークンがなく、正規ダミーチケットでもない「怪しいパラメータ」はブロック
+                    showScreen('screen-shared');
+                    return;
+                }
 
-            // 【修正】当日利用済みチェック（ご指定のユニークキーに変更）
-            if (localStorage.getItem('gift_page_used') === today) {
-                showScreen('screen-already');
-                return;
-            }
+                // 🚨 2. 当日利用済みチェック（絶対ロック）
+                if (localStorage.getItem('tp_used') === today) {
+                    showScreen('screen-already');
+                    return;
+                }
 
-            // 🚨 【新規】今日の利用権利があるか（当日QRを読み込んだか）チェック
-            if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
-                showScreen('screen-shared');
-                return;
-            }
+                // 🚨 3. 本日の正規アクセス履歴があるかチェック
+                if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+                    showScreen('screen-shared');
+                    return;
+                }
 
-            // フェーズ復元
-            const phase = sessionStorage.getItem('tp_phase') || 'p1';
-            if (phase === 'p1') {
+                // 🚨 4. 問題なければフェーズ状態の復元
+                const phase = sessionStorage.getItem('tp_phase') || 'p1';
+                if (phase === 'p1') {
+                    showScreen('screen-step1');
+                    startTimer('tp_p1_start', P1_LIMIT, 'timer-p1', 'screen-expired-p1');
+                } else if (phase === 'p2') {
+                    showScreen('screen-step2');
+                    startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
+                } else {
+                    showScreen('screen-already');
+                }
+
+            } catch(error) {
+                // 万が一の安全装置：予期せぬエラーでも画面を真っ白にせずステップ1を強制表示
+                console.error("システム調整:", error);
                 showScreen('screen-step1');
                 startTimer('tp_p1_start', P1_LIMIT, 'timer-p1', 'screen-expired-p1');
-            } else if (phase === 'p2') {
-                showScreen('screen-step2');
-                startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
-            } else {
-                showScreen('screen-already');
             }
         };
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            document.getElementById(id).classList.add('active-screen');
+            const target = document.getElementById(id);
+            if (target) target.classList.add('active-screen');
         }
 
         function startTimer(storageKey, limit, elementId, expiredScreenId) {
@@ -392,8 +390,8 @@
                 const left = limit - diff;
                 const today = getToday();
 
-                // 🚨 【新規】タブ開きっぱなしで日付を跨いだ場合のリアルタイム自動ロック
-                if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
+                // リアルタイム自動ロック（日付を跨いだ場合など）
+                if (localStorage.getItem('tp_auth_' + today) !== 'true') {
                     clearInterval(timer);
                     sessionStorage.clear();
                     showScreen('screen-shared');
@@ -403,7 +401,7 @@
                 if (left <= 0) {
                     clearInterval(timer);
                     if(el) el.textContent = "00:00";
-                    sessionStorage.clear(); // 期限切れでセッションを完全リセット
+                    sessionStorage.clear(); // 期限切れでセッションリセット
                     showScreen(expiredScreenId);
                     return;
                 }
@@ -418,8 +416,10 @@
 
         function openModal(id) { 
             const overlay = document.getElementById(id);
-            overlay.style.display = 'flex';
-            setTimeout(() => overlay.classList.add('show'), 10);
+            if (overlay) {
+                overlay.style.display = 'flex';
+                setTimeout(() => overlay.classList.add('show'), 10);
+            }
         }
         
         function closeModal() { 
@@ -434,13 +434,13 @@
             closeModal();
             const today = getToday();
 
-            // 🚨 【新規】実行前の当日最終チェック
-            if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
-                alert("クーポンを発行するには、本日中に再度二次元コードを読み込んでください。");
+            // 実行前の最終防衛チェック
+            if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+                alert("クーポンを発行するには、再度二次元コードを読み込んでください。");
                 showScreen('screen-shared');
                 return;
             }
-            if (localStorage.getItem('gift_page_used') === today) {
+            if (localStorage.getItem('tp_used') === today) {
                 alert("本日は既に使用済みです。");
                 showScreen('screen-already');
                 return;
@@ -457,13 +457,13 @@
             closeModal();
             const today = getToday();
 
-            // 🚨 【新規】ボタン押下時の当日最終チェック
-            if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
-                alert("クーポンを利用するには、本日中に再度二次元コードを読み込んでください。");
+            // ボタン押下時の最終防衛チェック
+            if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+                alert("クーポンを利用するには、再度二次元コードを読み込んでください。");
                 showScreen('screen-shared');
                 return;
             }
-            if (localStorage.getItem('gift_page_used') === today) {
+            if (localStorage.getItem('tp_used') === today) {
                 alert("本日は既に使用済みです。");
                 showScreen('screen-already');
                 return;
@@ -471,23 +471,23 @@
 
             clearInterval(timer); // タイマー停止
             
-            // チケットにUSEDスタンプを押す
-            document.getElementById('ticket').classList.add('used');
+            const ticketEl = document.getElementById('ticket');
+            if (ticketEl) ticketEl.classList.add('used');
             
-            // 使用ボタンの無効化（アニメーションも止まる）
             const useBtn = document.getElementById('use-btn');
-            useBtn.classList.remove('use-btn-animated');
-            useBtn.disabled = true;
-            useBtn.style.opacity = '0.5';
+            if (useBtn) {
+                useBtn.classList.remove('use-btn-animated');
+                useBtn.disabled = true;
+                useBtn.style.opacity = '0.5';
+            }
             
-            // 【修正】当日利用ロック（指定のユニークキーに変更）
-            localStorage.setItem('gift_page_used', today); 
+            localStorage.setItem('tp_used', today); 
             sessionStorage.setItem('tp_phase', 'used');
 
             // GASへデータ送信（ダッシュボード連携）
             fetch(`${GAS_URL}?t=${Date.now()}`, { mode: 'no-cors' }).catch(e => console.log(e));
 
-            // 最強の不正防止：3秒後に画面を完全フリーズ＆テキスト差し替え
+            // 不正防止：3秒後に画面を完全フリーズ＆テキスト差し替え
             setTimeout(() => {
                 document.body.innerHTML = `
                 <div style="text-align:center; padding:40px 20px; font-family:sans-serif; width:100%;">
