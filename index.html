@@ -327,20 +327,33 @@
         }
 
         window.onload = function() {
-            // 🚨 新規追加：URL共有ブロック処理
-            if (window.location.search.length > 0) {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+            const today = getToday();
+
+            // 🚨 【新規】QRコード（二次元コード）からの正規アクセス判定
+            if (token === 'secret123') {
+                // 正規アクセスなら、今日の「利用権利フラグ」を保存
+                localStorage.setItem('tp_gift_authorized_' + today, 'true');
+                
+                // 開いた瞬間にトークンURLを隠すためダミーパラメーターに書き換え（URL共有＆リロード防止）
+                const randomStr = Math.random().toString(36).substring(2, 10);
+                window.history.replaceState(null, '', '?ticket=' + randomStr);
+            } else if (window.location.search.length > 0 && !params.has('ticket')) {
+                // tokenがなく、かつ正規のダミーパラメータ（ticket）でもない場合は共有URLとみなしブロック
                 showScreen('screen-shared');
-                return; // 共有URLならここで処理を止める
+                return;
             }
 
-            // 正規アクセスなら開いた瞬間にダミーのパラメーターをURLに付与
-            const randomStr = Math.random().toString(36).substring(2, 10);
-            window.history.replaceState(null, '', '?ticket=' + randomStr);
-            // ===================================
-
-            // 当日利用済みチェック（絶対ロック）
-            if (localStorage.getItem('tp_used') === getToday()) {
+            // 【修正】当日利用済みチェック（ご指定のユニークキーに変更）
+            if (localStorage.getItem('gift_page_used') === today) {
                 showScreen('screen-already');
+                return;
+            }
+
+            // 🚨 【新規】今日の利用権利があるか（当日QRを読み込んだか）チェック
+            if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
+                showScreen('screen-shared');
                 return;
             }
 
@@ -349,9 +362,11 @@
             if (phase === 'p1') {
                 showScreen('screen-step1');
                 startTimer('tp_p1_start', P1_LIMIT, 'timer-p1', 'screen-expired-p1');
-            } else {
+            } else if (phase === 'p2') {
                 showScreen('screen-step2');
                 startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
+            } else {
+                showScreen('screen-already');
             }
         };
 
@@ -375,6 +390,15 @@
                 const now = Date.now();
                 const diff = Math.floor((now - start) / 1000);
                 const left = limit - diff;
+                const today = getToday();
+
+                // 🚨 【新規】タブ開きっぱなしで日付を跨いだ場合のリアルタイム自動ロック
+                if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
+                    clearInterval(timer);
+                    sessionStorage.clear();
+                    showScreen('screen-shared');
+                    return;
+                }
 
                 if (left <= 0) {
                     clearInterval(timer);
@@ -395,14 +419,12 @@
         function openModal(id) { 
             const overlay = document.getElementById(id);
             overlay.style.display = 'flex';
-            // 少し遅らせてクラスを付けることでCSSアニメーションを発火させる
             setTimeout(() => overlay.classList.add('show'), 10);
         }
         
         function closeModal() { 
             document.querySelectorAll('.overlay').forEach(o => {
                 o.classList.remove('show');
-                // アニメーションが終わってから非表示にする
                 setTimeout(() => { o.style.display = 'none'; }, 300);
             });
         }
@@ -410,15 +432,43 @@
         // スタッフが発券ボタンを押した
         function issueTicket() {
             closeModal();
+            const today = getToday();
+
+            // 🚨 【新規】実行前の当日最終チェック
+            if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
+                alert("クーポンを発行するには、本日中に再度二次元コードを読み込んでください。");
+                showScreen('screen-shared');
+                return;
+            }
+            if (localStorage.getItem('gift_page_used') === today) {
+                alert("本日は既に使用済みです。");
+                showScreen('screen-already');
+                return;
+            }
+
             sessionStorage.setItem('tp_phase', 'p2');
             sessionStorage.removeItem('tp_p1_start'); // P1タイマー破棄
             showScreen('screen-step2');
-            startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');
+            startTimer('tp_p2_start', P2_LIMIT, 'timer-p2', 'screen-expired-p2');https://github.com/tecmopia-kozunomori/special-gift/blob/main/index.html
         }
 
         // クーポン使用実行
         function executeUse() {
             closeModal();
+            const today = getToday();
+
+            // 🚨 【新規】ボタン押下時の当日最終チェック
+            if (localStorage.getItem('tp_gift_authorized_' + today) !== 'true') {
+                alert("クーポンを利用するには、本日中に再度二次元コードを読み込んでください。");
+                showScreen('screen-shared');
+                return;
+            }
+            if (localStorage.getItem('gift_page_used') === today) {
+                alert("本日は既に使用済みです。");
+                showScreen('screen-already');
+                return;
+            }
+
             clearInterval(timer); // タイマー停止
             
             // チケットにUSEDスタンプを押す
@@ -430,8 +480,8 @@
             useBtn.disabled = true;
             useBtn.style.opacity = '0.5';
             
-            // 当日利用ロック
-            localStorage.setItem('tp_used', getToday()); 
+            // 【修正】当日利用ロック（指定のユニークキーに変更）
+            localStorage.setItem('gift_page_used', today); 
             sessionStorage.setItem('tp_phase', 'used');
 
             // GASへデータ送信（ダッシュボード連携）
