@@ -182,6 +182,9 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .status-icon { font-size: 4rem; display: block; margin-bottom: 10px; }
+        
+        /* 開発用デバッグ表示（本番は消してもOK） */
+        #fp-display { font-size: 0.6rem; color: #ccc; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -209,6 +212,7 @@
                     <span class="btn-sub-text">(クーポン発行)</span>
                 </button>
                 <div class="small-notice">注意：ここから先はスタッフが操作します。<br>お客様が押すと無効になる場合があります。</div>
+                <div id="fp-display"></div>
             </div>
 
             <div id="screen-step2" class="screen">
@@ -287,12 +291,9 @@
             <h3 style="text-align:center; color:var(--accent-dark); font-weight:900; margin:0 0 15px 0; background:#e0f7fa; padding:8px; border-radius:10px;">✨ 使いかた ✨</h3>
             <p style="font-size:0.95rem; font-weight:bold; margin:10px 0; color:#333;">① 遊びたいクレーンゲーム機を選びます。</p>
             <p style="font-size:0.8rem; color:var(--primary); font-weight:bold; margin-left:1.2em;">※下のマークがある台が対象です。</p>
-            
             <img src="https://raw.githubusercontent.com/tecmopia-kozunomori/special-gift/refs/heads/main/1play.png" class="usage-img" alt="1playマーク">
-            
             <p style="font-size:0.95rem; font-weight:bold; margin:15px 0 10px; color:#333;">② 場所が決まったらスタッフをお呼びください。</p>
             <p style="font-size:0.95rem; font-weight:bold; margin:10px 0; color:#333;">③ スタッフの前で「クーポンを使用」を押します。</p>
-            
             <button class="btn" style="background:#eee; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #ccc; margin-top:20px;" onclick="closeModal()"><span class="btn-main-text">とじる</span></button>
         </div>
     </div>
@@ -300,51 +301,117 @@
     <script>
         const P1_LIMIT = 300;  
         const P2_LIMIT = 1800; 
-        
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbwcOSujT-Qqivo7Ghob53_0PxsQWnqsAkEk83539NfmckHzA3Z2gf5Y0dUNJ1jvdeXV/exec';
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxM1zkvN7MjBKQ1SC-63l5NU5_ZBwpduKdPSBN55G5alRxEA6yhh2K3HUObxCe-i4ol/exec';
         
         let timer = null;
+        let deviceFingerprint = "unknown"; // 端末識別IDを保持する変数
 
         function getToday() {
             return new Date().toLocaleDateString('ja-JP');
         }
 
-        window.onload = function() {
+        /* ============================================================
+           🛡️ 不正対策: ブラウザ・フィンガープリント生成関数
+           Canvasの描画差異や画面解像度等を組み合わせて端末固有のIDを生成
+        ============================================================ */
+        async function generateDeviceFingerprint() {
+            return new Promise((resolve) => {
+                try {
+                    // 1. Canvasフィンガープリント（OSやブラウザ固有の描画クセを抽出）
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 200; canvas.height = 50;
+                    ctx.textBaseline = "top";
+                    ctx.font = "14px 'Arial'";
+                    ctx.fillStyle = "#f60"; ctx.fillRect(125,1,62,20);
+                    ctx.fillStyle = "#069"; ctx.fillText("tecmopia-gift", 2, 15);
+                    ctx.fillStyle = "rgba(102, 204, 0, 0.7)"; ctx.fillText("tecmopia-gift", 4, 17);
+                    const canvasData = canvas.toDataURL();
+
+                    // 2. その他の端末・ブラウザ情報
+                    const dataString = [
+                        navigator.userAgent,
+                        navigator.language,
+                        screen.width + "x" + screen.height,
+                        screen.colorDepth,
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
+                        canvasData
+                    ].join('|||');
+
+                    // 3. 簡易的なハッシュ化 (32bit)
+                    let hash = 0;
+                    for (let i = 0; i < dataString.length; i++) {
+                        const char = dataString.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + char;
+                        hash = hash & hash; 
+                    }
+                    // 正の16進数文字列にして返す
+                    resolve(Math.abs(hash).toString(16));
+                } catch (e) {
+                    // 万が一エラーになっても処理を止めない
+                    resolve('err-' + Date.now());
+                }
+            });
+        }
+
+        /* 🛡️ 多重ストレージ保存・取得（WebViewで消去されにくくする工夫） */
+        function setPersistentState(key, value) {
+            try { localStorage.setItem(key, value); } catch(e){}
+            try { sessionStorage.setItem(key, value); } catch(e){}
+            document.cookie = `${key}=${value}; max-age=86400; path=/`;
+        }
+
+        function getPersistentState(key) {
+            let val = null;
+            try { val = localStorage.getItem(key); } catch(e){}
+            if (!val) { try { val = sessionStorage.getItem(key); } catch(e){} }
+            if (!val) {
+                const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
+                if (match) val = match[2];
+            }
+            return val;
+        }
+
+
+        // 初期化処理（非同期にしてフィンガープリント生成を待つ）
+        window.onload = async function() {
             try {
+                // 🛡️ 端末識別IDの生成
+                deviceFingerprint = await generateDeviceFingerprint();
+                const fpDisplay = document.getElementById('fp-display');
+                if(fpDisplay) fpDisplay.innerText = "ID: " + deviceFingerprint;
+
                 const params = new URLSearchParams(window.location.search);
                 const token = params.get('token');
                 const today = getToday();
 
                 // 🚨 1. QRコードからの正規アクセス時の処理
                 if (token === 'secret123') {
-                    localStorage.setItem('tp_auth_' + today, 'true');
+                    setPersistentState('tp_auth_' + today, 'true');
                     
-                    const currentPhase = localStorage.getItem('tp_phase_' + today);
-                    // まだ開始していないか、発券前(p1)で時間切れになった場合のみリセットして初期化
+                    const currentPhase = getPersistentState('tp_phase_' + today);
                     if (!currentPhase || currentPhase === 'p1' || currentPhase === 'expired-p1') {
-                        localStorage.setItem('tp_phase_' + today, 'p1');
+                        setPersistentState('tp_phase_' + today, 'p1');
                         localStorage.removeItem('tp_p1_start_' + today);
                     }
                     
                     try {
                         const randomStr = Math.random().toString(36).substring(2, 10);
                         window.history.replaceState(null, '', '?ticket=' + randomStr);
-                    } catch(e) {
-                        console.warn('URL書き換えコピー制限スキップ');
-                    }
+                    } catch(e) {}
                 } else if (window.location.search.length > 0 && !params.has('ticket')) {
                     showScreen('screen-shared');
                     return;
                 }
 
                 // 🚨 2. 本日の正規アクセス認証があるかチェック
-                if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+                if (getPersistentState('tp_auth_' + today) !== 'true') {
                     showScreen('screen-shared');
                     return;
                 }
 
-                // 🚨 3. ローカルストレージに保存された「現在の状態」から画面を完全復元
-                const phase = localStorage.getItem('tp_phase_' + today) || 'p1';
+                // 🚨 3. 現在のフェーズから画面を完全復元
+                const phase = getPersistentState('tp_phase_' + today) || 'p1';
                 
                 if (phase === 'p1') {
                     showScreen('screen-step1');
@@ -376,10 +443,10 @@
         function startTimer(storageKey, limit, elementId, expiredScreenId, expiredPhaseValue) {
             if (timer) clearInterval(timer);
             
-            let start = localStorage.getItem(storageKey);
+            let start = getPersistentState(storageKey);
             if (!start) {
                 start = Date.now();
-                localStorage.setItem(storageKey, start);
+                setPersistentState(storageKey, start);
             }
 
             const el = document.getElementById(elementId);
@@ -390,7 +457,7 @@
                 const left = limit - diff;
                 const today = getToday();
 
-                if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+                if (getPersistentState('tp_auth_' + today) !== 'true') {
                     clearInterval(timer);
                     showScreen('screen-shared');
                     return;
@@ -399,7 +466,7 @@
                 if (left <= 0) {
                     clearInterval(timer);
                     if(el) el.textContent = "00:00";
-                    localStorage.setItem('tp_phase_' + today, expiredPhaseValue);
+                    setPersistentState('tp_phase_' + today, expiredPhaseValue);
                     showScreen(expiredScreenId);
                     return;
                 }
@@ -431,13 +498,13 @@
             closeModal();
             const today = getToday();
 
-            if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+            if (getPersistentState('tp_auth_' + today) !== 'true') {
                 alert("クーポンを発行するには、再度二次元コードを読み込んでください。");
                 showScreen('screen-shared');
                 return;
             }
 
-            const currentPhase = localStorage.getItem('tp_phase_' + today);
+            const currentPhase = getPersistentState('tp_phase_' + today);
             if (currentPhase === 'used') {
                 alert("本日は既に使用済みです。");
                 showScreen('screen-already');
@@ -449,7 +516,7 @@
                 return;
             }
 
-            localStorage.setItem('tp_phase_' + today, 'p2');
+            setPersistentState('tp_phase_' + today, 'p2');
             showScreen('screen-step2');
             startTimer('tp_p2_start_' + today, P2_LIMIT, 'timer-p2', 'screen-expired-p2', 'expired-p2');
         }
@@ -458,13 +525,13 @@
             closeModal();
             const today = getToday();
 
-            if (localStorage.getItem('tp_auth_' + today) !== 'true') {
+            if (getPersistentState('tp_auth_' + today) !== 'true') {
                 alert("クーポンを利用するには、再度二次元コードを読み込んでください。");
                 showScreen('screen-shared');
                 return;
             }
 
-            const currentPhase = localStorage.getItem('tp_phase_' + today);
+            const currentPhase = getPersistentState('tp_phase_' + today);
             if (currentPhase === 'used') {
                 alert("本日は既に使用済みです。");
                 showScreen('screen-already');
@@ -488,9 +555,12 @@
                 useBtn.style.opacity = '0.5';
             }
             
-            localStorage.setItem('tp_phase_' + today, 'used'); 
+            setPersistentState('tp_phase_' + today, 'used'); 
 
-            fetch(`${GAS_URL}?t=${Date.now()}`, { mode: 'no-cors' }).catch(e => console.log(e));
+            // 🛡️ GASへデータを送信する際、URLパラメータに「フィンガープリントID (fp)」を付与する
+            // これにより、GAS側で「このID(fp)は本日すでに使用済みか」をチェック・記録できるようになります。
+            const requestUrl = `${GAS_URL}?t=${Date.now()}&fp=${deviceFingerprint}`;
+            fetch(requestUrl, { mode: 'no-cors' }).catch(e => console.log(e));
 
             setTimeout(() => {
                 document.body.innerHTML = `
@@ -500,6 +570,7 @@
                     <p style="font-weight:bold; color:#666; line-height:1.5;">この画面はもう使えません。<br>タブを完全に閉じてください。</p>
                     <div style="background:#fff; border:2px solid #ccc; padding:15px; border-radius:12px; margin-top:30px;">
                         <p style="color:#d32f2f; font-size:0.85rem; font-weight:bold; margin:0;">※再度利用するには、明日以降に<br>二次元コードを読み直す必要があります。</p>
+                        <p style="color:#999; font-size:0.7rem; margin-top:10px;">ID: ${deviceFingerprint}</p>
                     </div>
                 </div>`;
             }, 3000);
