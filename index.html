@@ -2,301 +2,717 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#d5006d">
     <title>特別クーポン - テクモピア</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Fredoka:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* === 🎨 カラースキームと基本設定 === */
         :root {
-            --main-bg: #fce4ec;
-            --container-bg: #ffffff;
-            --primary: #ff4081;
-            --primary-dark: #c2185b;
-            --accent: #00bcd4;
-            --accent-dark: #0097a7;
-            --warning: #d32f2f;
-            --text-color: #333333;
-            --jp-font: 'M PLUS Rounded 1c', sans-serif;
+            --pink: #ed1472;
+            --pink-deep: #a90055;
+            --pink-soft: #ffe5f0;
+            --cyan: #07b9d3;
+            --cyan-deep: #007f95;
+            --cyan-soft: #e4faff;
+            --gold: #ffc83d;
+            --gold-deep: #e49200;
+            --ink: #2f2635;
+            --muted: #756c7b;
+            --paper: #ffffff;
+            --danger: #d63245;
+            --shadow: 0 18px 45px rgba(102, 23, 68, .18);
+            --jp-font: 'M PLUS Rounded 1c', system-ui, sans-serif;
+            --pop-font: 'Fredoka', 'M PLUS Rounded 1c', sans-serif;
         }
 
         * { box-sizing: border-box; }
+        html { min-height: 100%; background: #fff3f8; }
         body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            color: var(--ink);
             font-family: var(--jp-font);
-            background-color: var(--main-bg);
-            margin: 0; padding: 0;
-            color: var(--text-color);
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
-            user-select: none; -webkit-user-select: none;
+            background:
+                radial-gradient(circle at 12% 8%, rgba(255, 200, 61, .38) 0 7%, transparent 7.5%),
+                radial-gradient(circle at 92% 18%, rgba(7, 185, 211, .18) 0 10%, transparent 10.5%),
+                linear-gradient(145deg, #fff8e5 0%, #fff 35%, #ffe8f2 100%);
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* === 📱 メインコンテナ === */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            z-index: -1;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: .75;
+        }
+        body::before {
+            width: 250px; height: 250px;
+            left: -145px; top: 31%;
+            background: repeating-conic-gradient(from 5deg, #ffb4d2 0 12deg, #fff1f6 12deg 24deg);
+        }
+        body::after {
+            width: 210px; height: 210px;
+            right: -125px; bottom: 9%;
+            background: repeating-conic-gradient(from 5deg, #9eeef8 0 12deg, #eaffff 12deg 24deg);
+        }
+
+        button { font: inherit; }
+        .page-shell {
+            width: min(100%, 470px);
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0 auto;
+            padding: env(safe-area-inset-top) 14px calc(24px + env(safe-area-inset-bottom));
+        }
+
         .ticket-container {
-            background: var(--container-bg);
-            width: 92%; max-width: 380px;
-            border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            overflow: hidden; text-align: center;
-            border: 4px solid var(--primary);
-            position: relative; margin: 20px auto;
+            position: relative;
+            background: rgba(255,255,255,.96);
+            border: 3px solid rgba(237,20,114,.16);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
         }
 
-        /* === 🎀 ヘッダー＆不正防止バー === */
-        .header {
-            background: linear-gradient(135deg, var(--primary), #ff80ab);
-            color: #fff; padding: 12px; font-weight: 900;
-            font-size: 1.1rem; border-bottom: 4px solid var(--primary-dark);
+        .brand-header {
+            position: relative;
+            padding: 21px 18px 25px;
+            text-align: center;
+            color: white;
+            background:
+                linear-gradient(120deg, rgba(255,255,255,.12) 0 16%, transparent 16.5% 36%, rgba(255,255,255,.08) 36.5% 52%, transparent 52.5%),
+                linear-gradient(135deg, #ba005c 0%, #ed1472 56%, #ff448f 100%);
+            border-bottom: 7px solid #8d0047;
         }
+        .brand-header::after {
+            content: "";
+            position: absolute;
+            left: 0; right: 0; bottom: -1px;
+            height: 9px;
+            background: repeating-linear-gradient(90deg, #ffc83d 0 20px, #fff2a9 20px 40px);
+        }
+        .brand {
+            font-family: var(--pop-font);
+            font-size: clamp(1.75rem, 7vw, 2.35rem);
+            letter-spacing: .09em;
+            line-height: 1;
+            text-shadow: 0 4px 0 rgba(115,0,56,.75);
+        }
+        .brand-star { color: #ffe15b; }
+        .brand-sub {
+            margin-top: 8px;
+            font-size: .85rem;
+            font-weight: 900;
+            letter-spacing: .08em;
+            color: #fff5b9;
+        }
+
+        .content { padding: 22px 18px 24px; }
+        .screen { display: none; }
+        .active-screen { display: block; animation: screenIn .35s ease both; }
+        @keyframes screenIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-track {
+            display: grid;
+            grid-template-columns: 1fr 32px 1fr;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        .step-node {
+            min-width: 0;
+            padding: 9px 6px;
+            border-radius: 14px;
+            background: #f3f0f4;
+            color: #a39aa7;
+            font-size: .72rem;
+            font-weight: 900;
+            text-align: center;
+            border: 2px solid #ebe5ed;
+        }
+        .step-node b { display: block; font-size: 1rem; }
+        .step-node.current {
+            color: white;
+            background: linear-gradient(135deg, var(--pink), #ff4b96);
+            border-color: #ff91bc;
+            box-shadow: 0 6px 14px rgba(237,20,114,.25);
+        }
+        .step-node.done {
+            color: var(--cyan-deep);
+            background: var(--cyan-soft);
+            border-color: #9ce8f2;
+        }
+        .step-line {
+            height: 5px;
+            border-radius: 10px;
+            background: #e9e3eb;
+        }
+        .step-line.done { background: linear-gradient(90deg, var(--pink), var(--cyan)); }
 
         .anti-fraud-bar {
-            background: repeating-linear-gradient(45deg, var(--primary), var(--primary) 15px, #ff80ab 15px, #ff80ab 30px);
-            background-size: 42px 42px; animation: moveStripes 1s linear infinite;
-            height: 10px; width: 100%; margin-bottom: 15px;
+            height: 10px;
+            margin: -1px 0 18px;
+            border-radius: 999px;
+            background: repeating-linear-gradient(45deg, var(--pink), var(--pink) 14px, #ff75ab 14px, #ff75ab 28px);
+            background-size: 40px 40px;
+            animation: stripeMove 1s linear infinite;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,.12);
         }
-        @keyframes moveStripes { from { background-position: 0 0; } to { background-position: 42px 0; } }
+        .anti-fraud-bar.cyan {
+            background: repeating-linear-gradient(45deg, var(--cyan), var(--cyan) 14px, #72e1ed 14px, #72e1ed 28px);
+        }
+        @keyframes stripeMove { to { background-position: 40px 0; } }
 
-        .content { padding: 0 20px 24px; }
+        .hero-copy { text-align: center; margin-bottom: 15px; }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            color: white;
+            background: linear-gradient(135deg, #ff5a65, #e93046);
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 900;
+            box-shadow: 0 4px 0 #b91e34;
+        }
+        .hero-copy h1 {
+            margin: 15px 0 5px;
+            font-size: clamp(1.23rem, 5.7vw, 1.65rem);
+            line-height: 1.45;
+            color: var(--ink);
+        }
+        .hero-copy h1 strong {
+            display: inline-block;
+            color: var(--pink-deep);
+            font-size: clamp(2rem, 9vw, 2.8rem);
+            line-height: 1.08;
+            margin: 5px 0;
+            text-shadow: 0 4px 0 #ffe0ec;
+        }
+        .hero-copy h1 strong span { color: var(--pink); }
 
-        /* === 🎁 見出しアニメーション === */
-        .promo-header { margin: 15px 0 25px; animation: bouncePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .promo-sub {
-            font-size: 0.95rem; color: #fff; font-weight: 900; display: inline-block;
-            background: #ff5252; padding: 4px 16px; border-radius: 30px;
-            margin-bottom: 10px; box-shadow: 0 4px 0 #d32f2f;
-            letter-spacing: 1px;
+        .coupon-ticket {
+            position: relative;
+            margin: 18px 0;
+            padding: 23px 16px 20px;
+            overflow: hidden;
+            text-align: center;
+            background:
+                radial-gradient(circle at 0 50%, transparent 0 12px, #fffced 13px),
+                radial-gradient(circle at 100% 50%, transparent 0 12px, #fffced 13px);
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+            box-shadow: 0 9px 22px rgba(121,82,0,.12);
         }
-        .promo-main { 
-            font-size: 1.4rem; 
-            color: #d84315; font-weight: 900; line-height: 1.4;
-            background: linear-gradient(transparent 50%, #fff9c4 50%); display: inline-block;
-            text-shadow: 2px 2px 0px #ffe0b2, 0 4px 10px rgba(255, 64, 129, 0.2);
-            margin: 0; padding: 5px;
+        .coupon-ticket::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(135deg, rgba(255,255,255,0) 0 45px, rgba(255,255,255,.75) 45px 64px, rgba(255,255,255,0) 64px 120px);
+            transform: translateX(-120%);
+            animation: ticketShine 3.8s infinite;
+            pointer-events: none;
         }
-        @keyframes bouncePop {
-            0% { transform: scale(0.5); opacity: 0; }
-            70% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes ticketShine { 0%,55% { transform: translateX(-120%); } 76%,100% { transform: translateX(120%); } }
+        .ticket-kicker {
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            padding: 5px 14px;
+            border-radius: 999px;
+            background: #fff0b9;
+            color: #a36200;
+            font-size: .75rem;
+            font-weight: 900;
         }
+        .ticket-main {
+            position: relative;
+            z-index: 2;
+            margin: 10px 0 0;
+            color: #cf4c00;
+            font-size: 1.25rem;
+            line-height: 1.25;
+            font-weight: 900;
+        }
+        .ticket-main strong {
+            display: block;
+            font-family: var(--pop-font);
+            font-size: clamp(2.1rem, 10vw, 3rem);
+            color: #ef176f;
+            line-height: 1;
+            margin-top: 7px;
+            text-shadow: 0 4px 0 white;
+        }
+        .ticket-main strong span { font-size: .65em; }
 
-        /* === 🎫 チケット風デザイン === */
-        .ticket-box {
-            background: linear-gradient(135deg, #fffde7, #fff9c4);
-            border: 3px dashed #fbc02d; border-radius: 16px;
-            padding: 25px 15px; margin: 20px 0; position: relative; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        .guide-card {
+            display: grid;
+            grid-template-columns: 45px 1fr;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            margin: 16px 0;
+            border-radius: 18px;
+            background: #fff6fa;
+            border: 2px solid #ffd0e2;
+            text-align: left;
         }
-        /* ✨ キラッと光るシャインエフェクト */
-        .ticket-box::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); animation: shine 3s infinite; z-index: 1;
+        .guide-card.blue {
+            background: #eefcff;
+            border-color: #b7edf4;
         }
-        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .guide-num {
+            width: 45px; height: 45px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            color: white;
+            background: linear-gradient(135deg, var(--pink), #ff619f);
+            font-family: var(--pop-font);
+            font-size: 1.25rem;
+            box-shadow: 0 4px 0 var(--pink-deep);
+        }
+        .blue .guide-num {
+            background: linear-gradient(135deg, var(--cyan), #46d6e9);
+            box-shadow: 0 4px 0 var(--cyan-deep);
+        }
+        .guide-card b { display: block; font-size: 1rem; color: var(--ink); }
+        .guide-card small { display: block; margin-top: 3px; color: var(--muted); line-height: 1.45; }
 
-        /* USEDスタンプ */
-        .ticket-box.used::after {
-            content: 'USED'; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) rotate(-20deg);
-            color: rgba(211, 47, 47, 0.85); font-size: 4rem; font-weight: 900;
-            border: 8px solid rgba(211, 47, 47, 0.85); padding: 5px 20px;
-            border-radius: 15px; z-index: 10; font-family: 'Arial Black', sans-serif;
-            animation: stampDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes stampDown { 
-            0% { transform: translate(-50%, -50%) scale(3) rotate(0); opacity: 0; } 
-            100% { transform: translate(-50%, -50%) scale(1) rotate(-20deg); opacity: 1; } 
-        }
-
-        .ticket-label { background: #ffe0b2; color: #e65100; padding: 4px 15px; border-radius: 20px; font-size: 0.95rem; font-weight: 900; position: relative; z-index: 2; }
-        .ticket-title { font-size: 1.8rem; font-weight: 900; color: #d84315; margin: 15px 0 0; line-height: 1.2; position: relative; z-index: 2; }
-
-        /* === ⏳ タイマー === */
         .timer-box {
-            background: #222; color: #fff; padding: 12px; border-radius: 14px;
-            margin: 20px 0; border: 2px solid var(--primary);
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+            position: relative;
+            margin: 17px 0;
+            padding: 12px 16px 14px;
+            border-radius: 18px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(180deg, #302b35, #17131a);
+            border: 3px solid #514957;
+            box-shadow: inset 0 3px 7px rgba(0,0,0,.55), 0 7px 18px rgba(38,24,42,.15);
         }
-        .timer-label { font-size: 0.8rem; color: #ffab91; font-weight: bold; margin-bottom: 2px; }
-        .timer-value { font-size: 2.2rem; font-weight: bold; color: #f1c40f; font-family: monospace; letter-spacing: 2px; }
+        .timer-box.cyan-timer { border-color: #1e8da0; }
+        .timer-label {
+            font-size: .76rem;
+            color: #ffc4d9;
+            font-weight: 900;
+            letter-spacing: .08em;
+        }
+        .cyan-timer .timer-label { color: #b8f5fb; }
+        .timer-value {
+            margin-top: 3px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: clamp(2.45rem, 13vw, 3.35rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: .06em;
+            color: #ffe158;
+            text-shadow: 0 0 15px rgba(255,225,88,.36);
+        }
+        .cyan-timer .timer-value { color: #62f0df; text-shadow: 0 0 15px rgba(98,240,223,.35); }
 
-        /* === 🔘 ボタン === */
+        .staff-zone {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 20px;
+            background: repeating-linear-gradient(-45deg, #fff1f5 0 11px, #fff8fa 11px 22px);
+            border: 3px solid #f5a0b7;
+        }
+        .staff-label {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            color: white;
+            background: var(--danger);
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: .05em;
+        }
+        .staff-note {
+            margin: 11px 3px 0;
+            color: var(--danger);
+            font-size: .76rem;
+            font-weight: 900;
+            line-height: 1.55;
+        }
+
         .btn {
-            background: linear-gradient(135deg, var(--primary), #f50057);
-            color: #fff; border: none; padding: 14px 10px; width: 100%;
-            border-radius: 40px; box-shadow: 0 6px 0 var(--primary-dark);
-            cursor: pointer; transition: 0.1s;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            line-height: 1.2;
+            width: 100%;
+            min-height: 58px;
+            border: 0;
+            border-radius: 18px;
+            padding: 11px 14px;
+            color: white;
+            background: linear-gradient(135deg, var(--pink), #ff438e);
+            box-shadow: 0 7px 0 var(--pink-deep), 0 10px 18px rgba(237,20,114,.2);
+            cursor: pointer;
+            transition: transform .1s, box-shadow .1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .btn:active { transform: translateY(4px) scale(0.98); box-shadow: 0 2px 0 var(--primary-dark); animation: none; }
-        .btn-main-text { font-size: 1.3rem; font-weight: 900; }
-        .btn-sub-text { font-size: 0.9rem; font-weight: bold; margin-top: 2px; opacity: 0.95; }
-        
-        @keyframes pulse-main {
-            0% { transform: scale(1); box-shadow: 0 6px 0 var(--accent-dark); }
-            50% { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0, 188, 212, 0.4), 0 6px 0 var(--accent-dark); }
-            100% { transform: scale(1); box-shadow: 0 6px 0 var(--accent-dark); }
+        .btn:active { transform: translateY(6px); box-shadow: 0 1px 0 var(--pink-deep); }
+        .btn-main-text { font-size: 1.16rem; font-weight: 900; line-height: 1.1; }
+        .btn-sub-text { margin-top: 3px; font-size: .74rem; font-weight: 900; opacity: .9; }
+        .btn-cyan {
+            background: linear-gradient(135deg, var(--cyan), #3bd4e6);
+            box-shadow: 0 7px 0 var(--cyan-deep), 0 10px 18px rgba(7,185,211,.2);
         }
-        
-        @keyframes pulse-outline {
-            0% { transform: scale(1); box-shadow: 0 4px 0 var(--accent-dark); }
-            50% { transform: scale(1.03); box-shadow: 0 6px 12px rgba(0, 188, 212, 0.3), 0 4px 0 var(--accent-dark); }
-            100% { transform: scale(1); box-shadow: 0 4px 0 var(--accent-dark); }
+        .btn-cyan:active { box-shadow: 0 1px 0 var(--cyan-deep); }
+        .use-btn-animated { animation: usePulse 1.8s infinite; }
+        @keyframes usePulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.025); }
         }
+        .btn:disabled { animation: none !important; transform: none !important; cursor: default; }
 
-        .use-btn-animated { animation: pulse-main 2s infinite; }
         .btn-outline {
-            background: #fff; color: var(--accent-dark); border: 2px solid var(--accent);
-            padding: 12px; font-size: 1rem; font-weight: 900; border-radius: 30px; 
-            box-shadow: 0 4px 0 var(--accent-dark); margin-bottom: 20px;
-            display: block; width: 100%; cursor: pointer;
-            animation: pulse-outline 2.5s infinite;
+            width: 100%;
+            margin: 3px 0 15px;
+            padding: 12px;
+            border: 2px solid var(--cyan);
+            border-radius: 16px;
+            color: var(--cyan-deep);
+            background: white;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #9adce5;
         }
-        .btn-outline:active { transform: translateY(3px) scale(0.98); box-shadow: 0 1px 0 var(--accent-dark); animation: none; }
-        .btn:disabled { animation: none !important; transform: none !important; }
+        .btn-outline:active { transform: translateY(3px); box-shadow: 0 1px 0 #9adce5; }
 
-        .small-notice { font-size: 0.75rem; color: var(--warning); font-weight: bold; margin-top: 12px; line-height: 1.4; }
+        .ticket-box {
+            position: relative;
+            overflow: hidden;
+            margin: 0 0 15px;
+            padding: 25px 15px;
+            text-align: center;
+            border: 3px dashed var(--gold);
+            border-radius: 21px;
+            background: linear-gradient(135deg, #fffef5, #fff5b9);
+            box-shadow: 0 9px 20px rgba(137,94,0,.13);
+        }
+        .ticket-box::before {
+            content: "";
+            position: absolute;
+            inset: -50% auto -50% -90%;
+            width: 45%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
+            transform: skewX(-22deg);
+            animation: issuedShine 3s infinite;
+        }
+        @keyframes issuedShine { 0%,55% { left:-90%; } 80%,100% { left:150%; } }
+        .ticket-label {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 999px;
+            color: white;
+            background: var(--cyan);
+            font-size: .75rem;
+            font-weight: 900;
+            box-shadow: 0 3px 0 var(--cyan-deep);
+        }
+        .ticket-title {
+            position: relative;
+            z-index: 2;
+            margin: 13px 0 0;
+            color: #d44b00;
+            font-size: 1.45rem;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+        .ticket-title strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--pink);
+            font-size: 2.5rem;
+            line-height: 1;
+            text-shadow: 0 4px 0 white;
+        }
+        .ticket-box.used::after {
+            content: "USED";
+            position: absolute;
+            z-index: 10;
+            left: 50%; top: 50%;
+            transform: translate(-50%,-50%) rotate(-16deg);
+            padding: 4px 18px;
+            color: rgba(204,30,56,.82);
+            border: 7px solid rgba(204,30,56,.82);
+            border-radius: 14px;
+            font: 900 3.4rem/1 var(--pop-font);
+            letter-spacing: .05em;
+            animation: stampIn .35s cubic-bezier(.2,1.5,.5,1) both;
+        }
+        @keyframes stampIn { from { opacity:0; transform:translate(-50%,-50%) scale(2.3) rotate(0); } }
 
-        /* === 📱 モーダル === */
+        .status-card {
+            padding: 30px 16px 25px;
+            text-align: center;
+        }
+        .status-icon {
+            display: grid;
+            place-items: center;
+            width: 95px; height: 95px;
+            margin: 0 auto 15px;
+            border-radius: 30px;
+            font-size: 3.6rem;
+            background: #fff3f7;
+            box-shadow: inset 0 0 0 3px #ffd3e2;
+        }
+        .status-card h2 { margin: 0; font-size: 1.35rem; }
+        .status-card p { margin: 12px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.65; font-weight: 700; }
+
         .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; justify-content: center;
-            align-items: center; z-index: 2000; padding: 20px; backdrop-filter: blur(4px);
-            opacity: 0; transition: opacity 0.3s;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(29,20,32,.7);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            transition: opacity .25s;
         }
-        .overlay.show { display: flex; opacity: 1; }
-        
+        .overlay.show { display:flex; opacity:1; }
         .modal {
-            background: #fff; width: 100%; max-width: 340px; border-radius: 24px;
-            padding: 24px; text-align: center; border: 4px solid var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            max-width: 360px;
+            max-height: min(88vh, 690px);
+            overflow-y: auto;
+            padding: 22px 19px 20px;
+            border: 4px solid #ff9fc3;
+            border-radius: 25px;
+            background: white;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,.3);
+            transform: translateY(18px) scale(.96);
+            transition: transform .25s cubic-bezier(.2,1.2,.5,1);
         }
-        .overlay.show .modal { transform: translateY(0) scale(1); }
-        .modal-btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-btn-group .btn { flex: 1; }
-        .usage-img { width: 100%; max-width: 220px; border-radius: 12px; border: 1px solid #ddd; margin: 12px auto; display: block; }
+        .overlay.show .modal { transform:none; }
+        .modal-icon {
+            width: 66px; height: 66px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 10px;
+            border-radius: 22px;
+            background: #fff0f5;
+            font-size: 2rem;
+        }
+        .modal h3 { margin: 4px 0 8px; font-size: 1.3rem; }
+        .modal p { color: #514a55; line-height: 1.6; font-weight: 700; font-size: .9rem; }
+        .modal-btn-group { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:17px; }
+        .modal .btn { min-height: 50px; border-radius: 15px; box-shadow: 0 5px 0 var(--pink-deep); }
+        .modal .btn.secondary {
+            color: #4f4952;
+            background: #ece9ed;
+            box-shadow: 0 5px 0 #bbb4bd;
+        }
+        .modal .btn.secondary:active { box-shadow:0 1px 0 #bbb4bd; }
+        .usage-list { text-align:left; display:grid; gap:10px; margin:15px 0; }
+        .usage-step {
+            display:grid;
+            grid-template-columns:32px 1fr;
+            gap:9px;
+            align-items:start;
+            padding:10px;
+            border-radius:14px;
+            background:#f7fbfc;
+        }
+        .usage-step span {
+            display:grid; place-items:center;
+            width:32px; height:32px;
+            color:white; background:var(--cyan);
+            border-radius:10px; font-weight:900;
+        }
+        .usage-step b { font-size:.88rem; line-height:1.5; }
+        .usage-img { width:100%; max-width:230px; display:block; margin:10px auto; border:2px solid #e9e5ea; border-radius:14px; }
 
-        /* === 📺 画面制御 === */
-        .screen { display: none; }
-        .active-screen { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #fp-display { margin-top:10px; color:#c1b9c4; font-size:.55rem; word-break:break-all; }
 
-        .status-icon { font-size: 4rem; display: block; margin-bottom: 10px; }
-        
-        /* 開発用デバッグ表示（本番は消してもOK） */
-        #fp-display { font-size: 0.6rem; color: #ccc; margin-top: 10px; }
+        @media (max-width: 365px) {
+            .page-shell { padding-left:8px; padding-right:8px; }
+            .content { padding-left:13px; padding-right:13px; }
+            .ticket-container { border-radius:22px; }
+            .brand-header { padding-left:10px; padding-right:10px; }
+            .modal-btn-group { grid-template-columns:1fr; }
+        }
+        @media (min-width: 700px) {
+            .page-shell { padding-top: 20px; padding-bottom: 20px; }
+            .ticket-container { min-height: calc(100vh - 40px); min-height: calc(100dvh - 40px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
+        }
     </style>
 </head>
 <body>
+    <main class="page-shell">
+        <div class="ticket-container">
+            <header class="brand-header">
+                <div class="brand">TECMOPIA <span class="brand-star">★</span></div>
+                <div class="brand-sub">公津の杜店｜SPECIAL COUPON</div>
+            </header>
 
-    <div class="ticket-container">
-        <div class="header">テクモピア 公津の杜</div>
-        
-        <div class="content">
-            
-            <div id="screen-step1" class="screen">
-                <div class="anti-fraud-bar"></div>
-                <div class="promo-header">
-                    <span class="promo-sub">このポスターを見つけた人限定！</span>
-                    <h2 class="promo-main">3階テクモピアで使える<br><span style="font-size: 2rem;">クレーンゲーム<br>1回無料クーポン</span><br>プレゼント！</h2>
-                </div>
-                <div style="background:#f1f8e9; padding:12px; border-radius:12px; color:#1b5e20; font-weight:900; font-size:0.95rem; line-height:1.4;">
-                    【ステップ 1】<br>3階カウンターのスタッフに<br>この画面を見せてください。
-                </div>
-                <div class="timer-box">
-                    <div class="timer-label">⏱️ 発券の有効期限</div>
-                    <div id="timer-p1" class="timer-value">10:00</div>
-                </div>
-                <button class="btn" onclick="openModal('confirm-issue')">
-                    <span class="btn-main-text">スタッフが確認</span>
-                    <span class="btn-sub-text">(クーポン発行)</span>
-                </button>
-                <div class="small-notice">注意：ここから先はスタッフが操作します。<br>お客様が押すと無効になる場合があります。</div>
-                <div id="fp-display"></div>
+            <div class="content">
+                <section id="screen-step1" class="screen">
+                    <div class="step-track" aria-label="クーポン利用手順">
+                        <div class="step-node current"><b>STEP 1</b>スタッフ確認</div>
+                        <div class="step-line"></div>
+                        <div class="step-node"><b>STEP 2</b>クーポン使用</div>
+                    </div>
+                    <div class="anti-fraud-bar"></div>
+
+                    <div class="hero-copy">
+                        <div class="eyebrow">🎁 ポスター発見者限定</div>
+                        <h1>3階テクモピアで使える<br><strong>クレーンゲーム<br><span>1回無料</span></strong><br>クーポンをプレゼント！</h1>
+                    </div>
+
+                    <div class="coupon-ticket">
+                        <span class="ticket-kicker">SPECIAL TICKET</span>
+                        <p class="ticket-main">クレーンゲーム<strong>1<span>回</span> FREE</strong></p>
+                    </div>
+
+                    <div class="guide-card">
+                        <div class="guide-num">1</div>
+                        <div><b>3階カウンターへ</b><small>スタッフにこの画面を見せてください。</small></div>
+                    </div>
+
+                    <div class="timer-box">
+                        <div class="timer-label">⏱ 発券できる残り時間</div>
+                        <div id="timer-p1" class="timer-value">10:00</div>
+                    </div>
+
+                    <div class="staff-zone">
+                        <div class="staff-label">🔒 STAFF ONLY</div>
+                        <button class="btn" onclick="openModal('confirm-issue')">
+                            <span class="btn-main-text">スタッフが確認</span>
+                            <span class="btn-sub-text">確認後、クーポンを発券します</span>
+                        </button>
+                        <p class="staff-note">ここから先はスタッフが操作します。お客様が先に押すと無効になる場合があります。</p>
+                    </div>
+                    <div id="fp-display"></div>
+                </section>
+
+                <section id="screen-step2" class="screen">
+                    <div class="step-track" aria-label="クーポン利用手順">
+                        <div class="step-node done"><b>✓ STEP 1</b>発券完了</div>
+                        <div class="step-line done"></div>
+                        <div class="step-node current" style="background:linear-gradient(135deg,var(--cyan),#43d4e5);border-color:#9be8f1;box-shadow:0 6px 14px rgba(7,185,211,.25)"><b>STEP 2</b>クーポン使用</div>
+                    </div>
+                    <div class="anti-fraud-bar cyan"></div>
+
+                    <div id="ticket" class="ticket-box">
+                        <span class="ticket-label">✓ 発券完了</span>
+                        <h2 class="ticket-title">クレーンゲーム<strong>1回無料</strong></h2>
+                    </div>
+
+                    <button class="btn-outline" onclick="openModal('usage-modal')">✨ 対象台と使いかたを確認</button>
+
+                    <div class="guide-card blue">
+                        <div class="guide-num">2</div>
+                        <div><b>遊ぶ台を決めてスタッフを呼ぶ</b><small>この画面を見せ、スタッフの前で使用してください。</small></div>
+                    </div>
+
+                    <div class="timer-box cyan-timer">
+                        <div class="timer-label">⏱ クーポンを使える残り時間</div>
+                        <div id="timer-p2" class="timer-value">30:00</div>
+                    </div>
+
+                    <div class="staff-zone" style="border-color:#78dbe7;background:repeating-linear-gradient(-45deg,#effcff 0 11px,#f8feff 11px 22px)">
+                        <div class="staff-label" style="background:var(--cyan-deep)">🔒 STAFF CHECK</div>
+                        <button id="use-btn" class="btn btn-cyan use-btn-animated" onclick="openModal('confirm-use')">
+                            <span class="btn-main-text">クーポンを使用</span>
+                            <span class="btn-sub-text">スタッフ確認後に押してください</span>
+                        </button>
+                        <p class="staff-note">必ずスタッフを呼んでから操作してください。事前に押すと無効となります。</p>
+                    </div>
+                </section>
+
+                <section id="screen-expired-p1" class="screen status-card">
+                    <span class="status-icon">⌛</span>
+                    <h2>発券期限が切れました</h2>
+                    <p>もう一度、店頭の二次元コードを<br>読み取るところからやり直してください。</p>
+                </section>
+
+                <section id="screen-expired-p2" class="screen status-card">
+                    <span class="status-icon">❌</span>
+                    <h2>利用期限が切れました</h2>
+                    <p>発券から30分を過ぎたため、<br>このクーポンは利用できません。</p>
+                </section>
+
+                <section id="screen-already" class="screen status-card">
+                    <span class="status-icon">✅</span>
+                    <h2>本日は利用済みです</h2>
+                    <p>このクーポンは1日1回までです。<br>また明日、遊びに来てください！</p>
+                </section>
+
+                <section id="screen-shared" class="screen status-card">
+                    <span class="status-icon">🔐</span>
+                    <h2>直接アクセスできません</h2>
+                    <p>共有されたURLからは開けません。<br>店頭の二次元コードを読み取ってください。</p>
+                </section>
             </div>
-
-            <div id="screen-step2" class="screen">
-                <div class="anti-fraud-bar" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #80deea 15px, #80deea 30px);"></div>
-                <div id="ticket" class="ticket-box">
-                    <span class="ticket-label">発券完了</span>
-                    <h2 class="ticket-title">クレーンゲーム<br>1回無料</h2>
-                </div>
-                <button class="btn-outline" onclick="openModal('usage-modal')">
-                    ✨ クーポンの使いかたを見る
-                </button>
-                <div style="background:#e3f2fd; padding:12px; border-radius:12px; color:#1565c0; font-weight:900; font-size:0.95rem; line-height: 1.4;">
-                    【ステップ 2】<br>遊ぶ台を決めてスタッフを呼び、<br>この画面を見せてください。
-                </div>
-                <div class="timer-box" style="border-color: var(--accent);">
-                    <div class="timer-label" style="color:#b2ebf2;">⏱️ クーポンの利用期限</div>
-                    <div id="timer-p2" class="timer-value" style="color:#26a69a;">30:00</div>
-                </div>
-                <button id="use-btn" class="btn use-btn-animated" style="background:linear-gradient(135deg, var(--accent), var(--accent-dark));" onclick="openModal('confirm-use')">
-                    <span class="btn-main-text" style="margin-top: 5px;">クーポンを使用</span>
-                </button>
-                <div class="small-notice">注意：必ずスタッフを呼んでから押してください。<br>事前にお客様自身で押すと無効となります。</div>
-            </div>
-
-            <div id="screen-expired-p1" class="screen" style="padding: 40px 0;">
-                <span class="status-icon">⚠️</span>
-                <h3 style="font-weight:900; color:#333;">発券期限が切れました</h3>
-                <p style="font-weight:bold; color:#666; font-size:0.9rem;">もう一度二次元コードを<br>読み取るところからやり直してね。</p>
-            </div>
-
-            <div id="screen-expired-p2" class="screen" style="padding: 40px 0;">
-                <span class="status-icon">❌</span>
-                <h3 style="font-weight:900; color:#333;">利用期限が切れました</h3>
-                <p style="font-weight:bold; color:#666; font-size:0.9rem;">30分を過ぎたため、<br>このクーポンは消失しました。</p>
-            </div>
-
-            <div id="screen-already" class="screen" style="padding: 40px 0;">
-                <span class="status-icon">🌟</span>
-                <h3 style="font-weight:900; color:#333;">本日は利用済みです</h3>
-                <p style="font-weight:bold; color:#666; font-size:0.9rem;">このクーポンの利用は1日1回までです。<br>また明日遊びに来てね！🧸</p>
-            </div>
-
-            <div id="screen-shared" class="screen" style="padding: 40px 0;">
-                <span class="status-icon">🚫</span>
-                <h3 style="font-weight:900; color:#333;">直接アクセスできません</h3>
-                <p style="font-weight:bold; color:#666; font-size:0.9rem;">このページは共有されたリンクからは<br>開くことができません。<br>二次元コードから読み取ってね。</p>
-            </div>
-
         </div>
-    </div>
+    </main>
 
-    <div id="confirm-issue" class="overlay">
+    <div id="confirm-issue" class="overlay" role="dialog" aria-modal="true">
         <div class="modal">
-            <h3 style="color:var(--warning); font-weight:900; margin-top:0;">スタッフ専用確認</h3>
-            <p style="font-weight:bold; line-height:1.5; color:#444;">お客様が3階カウンターに<br>到着したことを確認しましたか？</p>
+            <div class="modal-icon">👩‍💼</div>
+            <h3 style="color:var(--danger)">スタッフ専用確認</h3>
+            <p>お客様が3階カウンターへ到着し、画面と内容を確認しましたか？</p>
             <div class="modal-btn-group">
-                <button class="btn" style="padding:12px; font-size:1rem; box-shadow:0 4px 0 var(--primary-dark);" onclick="issueTicket()"><span class="btn-main-text">はい(発券)</span></button>
-                <button class="btn" style="background:#e0e0e0; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #9e9e9e;" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
+                <button class="btn" onclick="issueTicket()"><span class="btn-main-text">はい、発券</span></button>
+                <button class="btn secondary" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
             </div>
         </div>
     </div>
 
-    <div id="confirm-use" class="overlay">
-        <div class="modal">
-            <h3 style="color:var(--accent); font-weight:900; margin-top:0;">クーポンを使用します</h3>
-            <p style="font-weight:bold; line-height:1.5; color:#444;">クーポンを使用するゲーム機を決め、<br>スタッフに確認しましたか？</p>
+    <div id="confirm-use" class="overlay" role="dialog" aria-modal="true">
+        <div class="modal" style="border-color:#78dbe7">
+            <div class="modal-icon" style="background:var(--cyan-soft)">🎮</div>
+            <h3 style="color:var(--cyan-deep)">クーポンを使用します</h3>
+            <p>対象のゲーム機を決め、スタッフが利用画面を確認していますか？</p>
             <div class="modal-btn-group">
-                <button class="btn" style="background:var(--accent); box-shadow:0 4px 0 var(--accent-dark); padding:12px; font-size:1rem;" onclick="executeUse()"><span class="btn-main-text">はい(使用)</span></button>
-                <button class="btn" style="background:#e0e0e0; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #9e9e9e;" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
+                <button class="btn btn-cyan" onclick="executeUse()"><span class="btn-main-text">はい、使用</span></button>
+                <button class="btn secondary" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
             </div>
         </div>
     </div>
 
-    <div id="usage-modal" class="overlay">
-        <div class="modal" style="text-align:left; max-width:340px; padding: 25px 20px;">
-            <h3 style="text-align:center; color:var(--accent-dark); font-weight:900; margin:0 0 15px 0; background:#e0f7fa; padding:8px; border-radius:10px;">✨ 使いかた ✨</h3>
-            <p style="font-size:0.95rem; font-weight:bold; margin:10px 0; color:#333;">① 遊びたいクレーンゲーム機を選びます。</p>
-            <p style="font-size:0.8rem; color:var(--primary); font-weight:bold; margin-left:1.2em;">※下のマークがある台が対象です。</p>
-            <img src="https://raw.githubusercontent.com/tecmopia-kozunomori/special-gift/refs/heads/main/1play.png" class="usage-img" alt="1playマーク">
-            <p style="font-size:0.95rem; font-weight:bold; margin:15px 0 10px; color:#333;">② 場所が決まったらスタッフをお呼びください。</p>
-            <p style="font-size:0.95rem; font-weight:bold; margin:10px 0; color:#333;">③ スタッフの前で「クーポンを使用」を押します。</p>
-            <button class="btn" style="background:#eee; color:#333; padding:12px; font-size:1rem; box-shadow:0 4px 0 #ccc; margin-top:20px;" onclick="closeModal()"><span class="btn-main-text">とじる</span></button>
+    <div id="usage-modal" class="overlay" role="dialog" aria-modal="true">
+        <div class="modal" style="border-color:#78dbe7">
+            <div class="modal-icon" style="background:var(--cyan-soft)">💡</div>
+            <h3 style="color:var(--cyan-deep)">クーポンの使いかた</h3>
+            <div class="usage-list">
+                <div class="usage-step"><span>1</span><b>遊びたいクレーンゲーム機を選びます。</b></div>
+                <div class="usage-step"><span>2</span><b>下の「1PLAY」マークがある台が対象です。</b></div>
+            </div>
+            <img src="https://raw.githubusercontent.com/tecmopia-kozunomori/special-gift/refs/heads/main/1play.png" class="usage-img" alt="1PLAY対象マーク">
+            <div class="usage-list">
+                <div class="usage-step"><span>3</span><b>場所が決まったらスタッフを呼びます。</b></div>
+                <div class="usage-step"><span>4</span><b>スタッフの前で「クーポンを使用」を押します。</b></div>
+            </div>
+            <button class="btn secondary" onclick="closeModal()"><span class="btn-main-text">とじる</span></button>
         </div>
     </div>
+
 
     <script>
         const P1_LIMIT = 600;  // 10分（600秒）に変更
