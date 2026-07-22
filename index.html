@@ -3,839 +3,978 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#d5006d">
+    <meta name="theme-color" content="#d10068">
+    <meta name="color-scheme" content="light">
     <title>特別クーポン - テクモピア</title>
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&family=Fredoka:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800;900&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pink: #ed1472;
-            --pink-deep: #a90055;
-            --pink-soft: #ffe5f0;
-            --cyan: #07b9d3;
-            --cyan-deep: #007f95;
+            --brand: #d10068;
+            --brand-2: #f32682;
+            --brand-deep: #8e0048;
+            --brand-soft: #ffe4f0;
+            --cyan: #00aeca;
+            --cyan-deep: #007589;
             --cyan-soft: #e4faff;
-            --gold: #ffc83d;
-            --gold-deep: #e49200;
-            --ink: #2f2635;
-            --muted: #756c7b;
+            --gold: #ffd247;
+            --gold-deep: #d98900;
+            --ink: #2b2330;
+            --muted: #776e7b;
+            --line: #eadfe6;
             --paper: #ffffff;
-            --danger: #d63245;
-            --shadow: 0 18px 45px rgba(102, 23, 68, .18);
-            --jp-font: 'M PLUS Rounded 1c', system-ui, sans-serif;
-            --pop-font: 'Fredoka', 'M PLUS Rounded 1c', sans-serif;
+            --danger: #d9364d;
+            --success: #14a86b;
+            --shadow-lg: 0 26px 70px rgba(84, 0, 44, .18);
+            --shadow-md: 0 15px 34px rgba(79, 14, 51, .12);
+            --shadow-sm: 0 8px 20px rgba(79, 14, 51, .08);
+            --jp: 'M PLUS Rounded 1c', system-ui, sans-serif;
+            --pop: 'Fredoka', 'M PLUS Rounded 1c', sans-serif;
         }
 
         * { box-sizing: border-box; }
-        html { min-height: 100%; background: #fff3f8; }
+        html { min-height: 100%; background: #f9eef4; }
         body {
             margin: 0;
             min-height: 100vh;
             min-height: 100dvh;
-            color: var(--ink);
-            font-family: var(--jp-font);
-            background:
-                radial-gradient(circle at 12% 8%, rgba(255, 200, 61, .38) 0 7%, transparent 7.5%),
-                radial-gradient(circle at 92% 18%, rgba(7, 185, 211, .18) 0 10%, transparent 10.5%),
-                linear-gradient(145deg, #fff8e5 0%, #fff 35%, #ffe8f2 100%);
             overflow-x: hidden;
+            color: var(--ink);
+            font-family: var(--jp);
+            background:
+                radial-gradient(circle at 7% 4%, rgba(255,210,71,.35) 0 8%, transparent 8.5%),
+                radial-gradient(circle at 96% 18%, rgba(0,174,202,.14) 0 13%, transparent 13.5%),
+                radial-gradient(circle at 8% 75%, rgba(209,0,104,.10) 0 14%, transparent 14.5%),
+                linear-gradient(150deg, #fff9ed 0%, #fff 34%, #ffe9f3 100%);
+            background-attachment: fixed;
             user-select: none;
             -webkit-user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body::before,
-        body::after {
+        body::before {
             content: "";
             position: fixed;
-            z-index: -1;
-            border-radius: 50%;
+            inset: 0;
+            z-index: -2;
             pointer-events: none;
-            opacity: .75;
-        }
-        body::before {
-            width: 250px; height: 250px;
-            left: -145px; top: 31%;
-            background: repeating-conic-gradient(from 5deg, #ffb4d2 0 12deg, #fff1f6 12deg 24deg);
-        }
-        body::after {
-            width: 210px; height: 210px;
-            right: -125px; bottom: 9%;
-            background: repeating-conic-gradient(from 5deg, #9eeef8 0 12deg, #eaffff 12deg 24deg);
+            opacity: .45;
+            background-image:
+                linear-gradient(rgba(209,0,104,.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(209,0,104,.035) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: linear-gradient(to bottom, #000, transparent 72%);
         }
 
         button { font: inherit; }
-        .page-shell {
-            width: min(100%, 470px);
+        button, a { -webkit-tap-highlight-color: transparent; }
+        button:focus-visible, a:focus-visible { outline: 4px solid rgba(255,210,71,.8); outline-offset: 3px; }
+
+        .app-shell {
+            width: min(100%, 520px);
             min-height: 100vh;
             min-height: 100dvh;
             margin: 0 auto;
-            padding: env(safe-area-inset-top) 14px calc(24px + env(safe-area-inset-bottom));
+            padding: max(12px, env(safe-area-inset-top)) 12px max(22px, env(safe-area-inset-bottom));
         }
 
-        .ticket-container {
+        .app-card {
             position: relative;
-            background: rgba(255,255,255,.96);
-            border: 3px solid rgba(237,20,114,.16);
-            border-radius: 30px;
+            min-height: calc(100dvh - 24px);
             overflow: hidden;
-            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,.95);
+            border-radius: 34px;
+            background: rgba(255,255,255,.94);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(18px);
         }
 
-        .brand-header {
+        .app-header {
             position: relative;
-            padding: 21px 18px 25px;
-            text-align: center;
+            isolation: isolate;
+            min-height: 238px;
+            padding: 18px 18px 36px;
+            overflow: hidden;
             color: white;
             background:
-                linear-gradient(120deg, rgba(255,255,255,.12) 0 16%, transparent 16.5% 36%, rgba(255,255,255,.08) 36.5% 52%, transparent 52.5%),
-                linear-gradient(135deg, #ba005c 0%, #ed1472 56%, #ff448f 100%);
-            border-bottom: 7px solid #8d0047;
-        }
-        .brand-header::after {
-            content: "";
-            position: absolute;
-            left: 0; right: 0; bottom: -1px;
-            height: 9px;
-            background: repeating-linear-gradient(90deg, #ffc83d 0 20px, #fff2a9 20px 40px);
-        }
-        .brand {
-            font-family: var(--pop-font);
-            font-size: clamp(1.75rem, 7vw, 2.35rem);
-            letter-spacing: .09em;
-            line-height: 1;
-            text-shadow: 0 4px 0 rgba(115,0,56,.75);
-        }
-        .brand-star { color: #ffe15b; }
-        .brand-sub {
-            margin-top: 8px;
-            font-size: .85rem;
-            font-weight: 900;
-            letter-spacing: .08em;
-            color: #fff5b9;
+                linear-gradient(130deg, rgba(255,255,255,.16), transparent 34%),
+                linear-gradient(145deg, #900049 0%, #d10068 45%, #ff3f94 100%);
         }
 
-        .content { padding: 22px 18px 24px; }
-        .screen { display: none; }
-        .active-screen { display: block; animation: screenIn .35s ease both; }
-        @keyframes screenIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .step-track {
-            display: grid;
-            grid-template-columns: 1fr 32px 1fr;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-        .step-node {
-            min-width: 0;
-            padding: 9px 6px;
-            border-radius: 14px;
-            background: #f3f0f4;
-            color: #a39aa7;
-            font-size: .72rem;
-            font-weight: 900;
-            text-align: center;
-            border: 2px solid #ebe5ed;
-        }
-        .step-node b { display: block; font-size: 1rem; }
-        .step-node.current {
-            color: white;
-            background: linear-gradient(135deg, var(--pink), #ff4b96);
-            border-color: #ff91bc;
-            box-shadow: 0 6px 14px rgba(237,20,114,.25);
-        }
-        .step-node.done {
-            color: var(--cyan-deep);
-            background: var(--cyan-soft);
-            border-color: #9ce8f2;
-        }
-        .step-line {
-            height: 5px;
-            border-radius: 10px;
-            background: #e9e3eb;
-        }
-        .step-line.done { background: linear-gradient(90deg, var(--pink), var(--cyan)); }
-
-        .anti-fraud-bar {
-            height: 10px;
-            margin: -1px 0 18px;
-            border-radius: 999px;
-            background: repeating-linear-gradient(45deg, var(--pink), var(--pink) 14px, #ff75ab 14px, #ff75ab 28px);
-            background-size: 40px 40px;
-            animation: stripeMove 1s linear infinite;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,.12);
-        }
-        .anti-fraud-bar.cyan {
-            background: repeating-linear-gradient(45deg, var(--cyan), var(--cyan) 14px, #72e1ed 14px, #72e1ed 28px);
-        }
-        @keyframes stripeMove { to { background-position: 40px 0; } }
-
-        .hero-copy { text-align: center; margin-bottom: 15px; }
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            color: white;
-            background: linear-gradient(135deg, #ff5a65, #e93046);
-            border-radius: 999px;
-            font-size: .78rem;
-            font-weight: 900;
-            box-shadow: 0 4px 0 #b91e34;
-        }
-        .hero-copy h1 {
-            margin: 15px 0 5px;
-            font-size: clamp(1.23rem, 5.7vw, 1.65rem);
-            line-height: 1.45;
-            color: var(--ink);
-        }
-        .hero-copy h1 strong {
-            display: inline-block;
-            color: var(--pink-deep);
-            font-size: clamp(2rem, 9vw, 2.8rem);
-            line-height: 1.08;
-            margin: 5px 0;
-            text-shadow: 0 4px 0 #ffe0ec;
-        }
-        .hero-copy h1 strong span { color: var(--pink); }
-
-        .coupon-ticket {
-            position: relative;
-            margin: 18px 0;
-            padding: 23px 16px 20px;
-            overflow: hidden;
-            text-align: center;
-            background:
-                radial-gradient(circle at 0 50%, transparent 0 12px, #fffced 13px),
-                radial-gradient(circle at 100% 50%, transparent 0 12px, #fffced 13px);
-            border-top: 3px solid var(--gold);
-            border-bottom: 3px solid var(--gold);
-            box-shadow: 0 9px 22px rgba(121,82,0,.12);
-        }
-        .coupon-ticket::before {
+        .app-header::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: repeating-linear-gradient(135deg, rgba(255,255,255,0) 0 45px, rgba(255,255,255,.75) 45px 64px, rgba(255,255,255,0) 64px 120px);
-            transform: translateX(-120%);
-            animation: ticketShine 3.8s infinite;
-            pointer-events: none;
-        }
-        @keyframes ticketShine { 0%,55% { transform: translateX(-120%); } 76%,100% { transform: translateX(120%); } }
-        .ticket-kicker {
-            display: inline-block;
-            position: relative;
-            z-index: 2;
-            padding: 5px 14px;
-            border-radius: 999px;
-            background: #fff0b9;
-            color: #a36200;
-            font-size: .75rem;
-            font-weight: 900;
-        }
-        .ticket-main {
-            position: relative;
-            z-index: 2;
-            margin: 10px 0 0;
-            color: #cf4c00;
-            font-size: 1.25rem;
-            line-height: 1.25;
-            font-weight: 900;
-        }
-        .ticket-main strong {
-            display: block;
-            font-family: var(--pop-font);
-            font-size: clamp(2.1rem, 10vw, 3rem);
-            color: #ef176f;
-            line-height: 1;
-            margin-top: 7px;
-            text-shadow: 0 4px 0 white;
-        }
-        .ticket-main strong span { font-size: .65em; }
-
-        .guide-card {
-            display: grid;
-            grid-template-columns: 45px 1fr;
-            gap: 12px;
-            align-items: center;
-            padding: 14px;
-            margin: 16px 0;
-            border-radius: 18px;
-            background: #fff6fa;
-            border: 2px solid #ffd0e2;
-            text-align: left;
-        }
-        .guide-card.blue {
-            background: #eefcff;
-            border-color: #b7edf4;
-        }
-        .guide-num {
-            width: 45px; height: 45px;
-            display: grid;
-            place-items: center;
-            border-radius: 14px;
-            color: white;
-            background: linear-gradient(135deg, var(--pink), #ff619f);
-            font-family: var(--pop-font);
-            font-size: 1.25rem;
-            box-shadow: 0 4px 0 var(--pink-deep);
-        }
-        .blue .guide-num {
-            background: linear-gradient(135deg, var(--cyan), #46d6e9);
-            box-shadow: 0 4px 0 var(--cyan-deep);
-        }
-        .guide-card b { display: block; font-size: 1rem; color: var(--ink); }
-        .guide-card small { display: block; margin-top: 3px; color: var(--muted); line-height: 1.45; }
-
-        .timer-box {
-            position: relative;
-            margin: 17px 0;
-            padding: 12px 16px 14px;
-            border-radius: 18px;
-            text-align: center;
-            color: white;
-            background: linear-gradient(180deg, #302b35, #17131a);
-            border: 3px solid #514957;
-            box-shadow: inset 0 3px 7px rgba(0,0,0,.55), 0 7px 18px rgba(38,24,42,.15);
-        }
-        .timer-box.cyan-timer { border-color: #1e8da0; }
-        .timer-label {
-            font-size: .76rem;
-            color: #ffc4d9;
-            font-weight: 900;
-            letter-spacing: .08em;
-        }
-        .cyan-timer .timer-label { color: #b8f5fb; }
-        .timer-value {
-            margin-top: 3px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-            font-size: clamp(2.45rem, 13vw, 3.35rem);
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: .06em;
-            color: #ffe158;
-            text-shadow: 0 0 15px rgba(255,225,88,.36);
-        }
-        .cyan-timer .timer-value { color: #62f0df; text-shadow: 0 0 15px rgba(98,240,223,.35); }
-
-        .staff-zone {
-            margin-top: 18px;
-            padding: 15px;
-            border-radius: 20px;
-            background: repeating-linear-gradient(-45deg, #fff1f5 0 11px, #fff8fa 11px 22px);
-            border: 3px solid #f5a0b7;
-        }
-        .staff-label {
-            display: inline-flex;
-            gap: 6px;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 5px 12px;
-            border-radius: 999px;
-            color: white;
-            background: var(--danger);
-            font-size: .72rem;
-            font-weight: 900;
-            letter-spacing: .05em;
-        }
-        .staff-note {
-            margin: 11px 3px 0;
-            color: var(--danger);
-            font-size: .76rem;
-            font-weight: 900;
-            line-height: 1.55;
+            z-index: -3;
+            opacity: .32;
+            background: repeating-linear-gradient(122deg, transparent 0 19px, rgba(255,255,255,.14) 19px 21px);
         }
 
-        .btn {
-            width: 100%;
-            min-height: 58px;
-            border: 0;
-            border-radius: 18px;
-            padding: 11px 14px;
-            color: white;
-            background: linear-gradient(135deg, var(--pink), #ff438e);
-            box-shadow: 0 7px 0 var(--pink-deep), 0 10px 18px rgba(237,20,114,.2);
-            cursor: pointer;
-            transition: transform .1s, box-shadow .1s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn:active { transform: translateY(6px); box-shadow: 0 1px 0 var(--pink-deep); }
-        .btn-main-text { font-size: 1.16rem; font-weight: 900; line-height: 1.1; }
-        .btn-sub-text { margin-top: 3px; font-size: .74rem; font-weight: 900; opacity: .9; }
-        .btn-cyan {
-            background: linear-gradient(135deg, var(--cyan), #3bd4e6);
-            box-shadow: 0 7px 0 var(--cyan-deep), 0 10px 18px rgba(7,185,211,.2);
-        }
-        .btn-cyan:active { box-shadow: 0 1px 0 var(--cyan-deep); }
-        .use-btn-animated { animation: usePulse 1.8s infinite; }
-        @keyframes usePulse {
-            0%,100% { transform: scale(1); }
-            50% { transform: scale(1.025); }
-        }
-        .btn:disabled { animation: none !important; transform: none !important; cursor: default; }
-
-        .btn-outline {
-            width: 100%;
-            margin: 3px 0 15px;
-            padding: 12px;
-            border: 2px solid var(--cyan);
-            border-radius: 16px;
-            color: var(--cyan-deep);
-            background: white;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #9adce5;
-        }
-        .btn-outline:active { transform: translateY(3px); box-shadow: 0 1px 0 #9adce5; }
-
-        .ticket-box {
-            position: relative;
-            overflow: hidden;
-            margin: 0 0 15px;
-            padding: 25px 15px;
-            text-align: center;
-            border: 3px dashed var(--gold);
-            border-radius: 21px;
-            background: linear-gradient(135deg, #fffef5, #fff5b9);
-            box-shadow: 0 9px 20px rgba(137,94,0,.13);
-        }
-        .ticket-box::before {
+        .app-header::after {
             content: "";
             position: absolute;
-            inset: -50% auto -50% -90%;
-            width: 45%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
-            transform: skewX(-22deg);
-            animation: issuedShine 3s infinite;
+            z-index: -2;
+            left: 50%;
+            bottom: -150px;
+            width: 470px;
+            height: 270px;
+            transform: translateX(-50%);
+            border: 46px solid rgba(255,255,255,.08);
+            border-radius: 50%;
         }
-        @keyframes issuedShine { 0%,55% { left:-90%; } 80%,100% { left:150%; } }
-        .ticket-label {
-            position: relative;
-            z-index: 2;
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 999px;
-            color: white;
-            background: var(--cyan);
-            font-size: .75rem;
-            font-weight: 900;
-            box-shadow: 0 3px 0 var(--cyan-deep);
-        }
-        .ticket-title {
-            position: relative;
-            z-index: 2;
-            margin: 13px 0 0;
-            color: #d44b00;
-            font-size: 1.45rem;
-            line-height: 1.2;
-            font-weight: 900;
-        }
-        .ticket-title strong {
-            display: block;
-            margin-top: 6px;
-            color: var(--pink);
-            font-size: 2.5rem;
-            line-height: 1;
-            text-shadow: 0 4px 0 white;
-        }
-        .ticket-box.used::after {
-            content: "USED";
-            position: absolute;
-            z-index: 10;
-            left: 50%; top: 50%;
-            transform: translate(-50%,-50%) rotate(-16deg);
-            padding: 4px 18px;
-            color: rgba(204,30,56,.82);
-            border: 7px solid rgba(204,30,56,.82);
-            border-radius: 14px;
-            font: 900 3.4rem/1 var(--pop-font);
-            letter-spacing: .05em;
-            animation: stampIn .35s cubic-bezier(.2,1.5,.5,1) both;
-        }
-        @keyframes stampIn { from { opacity:0; transform:translate(-50%,-50%) scale(2.3) rotate(0); } }
 
-        .status-card {
-            padding: 30px 16px 25px;
+        .header-orb { position: absolute; z-index: -1; border-radius: 50%; pointer-events: none; }
+        .header-orb.one { width: 92px; height: 92px; right: -26px; top: 48px; background: rgba(255,210,71,.94); box-shadow: 0 0 0 18px rgba(255,210,71,.16); }
+        .header-orb.two { width: 34px; height: 34px; left: 24px; bottom: 31px; background: rgba(255,255,255,.24); }
+        .header-orb.three { width: 18px; height: 18px; right: 50px; bottom: 24px; background: rgba(255,255,255,.42); }
+
+        .header-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .location-chip,
+        .daily-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 5px 11px;
+            border-radius: 999px;
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: .04em;
+        }
+
+        .location-chip { color: white; border: 1px solid rgba(255,255,255,.34); background: rgba(79,0,40,.22); backdrop-filter: blur(7px); }
+        .daily-chip { color: #814700; background: var(--gold); box-shadow: 0 4px 0 var(--gold-deep); }
+
+        .logo-plate {
+            width: min(100%, 360px);
+            margin: 0 auto;
+            padding: 12px 18px;
+            border: 1px solid rgba(255,255,255,.95);
+            border-radius: 20px;
+            background: rgba(255,255,255,.96);
+            box-shadow: 0 13px 30px rgba(73,0,36,.24), inset 0 1px 0 white;
+        }
+
+        .logo-plate img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .header-caption {
+            margin-top: 13px;
             text-align: center;
         }
-        .status-icon {
+        .header-caption strong {
+            display: block;
+            font-family: var(--pop);
+            font-size: .75rem;
+            letter-spacing: .22em;
+            color: #ffd2e5;
+        }
+        .header-caption span {
+            display: block;
+            margin-top: 4px;
+            font-size: .87rem;
+            font-weight: 900;
+            color: #fff7bd;
+        }
+
+        .auth-strip {
+            position: relative;
+            z-index: 5;
+            width: calc(100% - 30px);
+            min-height: 58px;
+            margin: -20px 15px 0;
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            border: 1px solid rgba(255,255,255,.95);
+            border-radius: 20px;
+            background: rgba(255,255,255,.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .auth-icon {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
             display: grid;
             place-items: center;
-            width: 95px; height: 95px;
-            margin: 0 auto 15px;
-            border-radius: 30px;
-            font-size: 3.6rem;
-            background: #fff3f7;
-            box-shadow: inset 0 0 0 3px #ffd3e2;
+            border-radius: 13px;
+            color: white;
+            background: linear-gradient(145deg, var(--success), #35c888);
+            box-shadow: 0 5px 0 #0a8050;
+            font-size: 1.1rem;
         }
-        .status-card h2 { margin: 0; font-size: 1.35rem; }
-        .status-card p { margin: 12px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.65; font-weight: 700; }
+        .auth-icon::after {
+            content: "";
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            width: 9px;
+            height: 9px;
+            border: 2px solid white;
+            border-radius: 50%;
+            background: #52df9e;
+            animation: securePulse 1.4s infinite;
+        }
+        @keyframes securePulse { 50% { transform: scale(.7); opacity: .45; } }
+
+        .auth-copy { min-width: 0; display: flex; flex-direction: column; }
+        .auth-copy small { color: var(--muted); font-size: .65rem; font-weight: 800; }
+        .auth-copy strong { margin-top: 2px; font-size: .88rem; }
+        .auth-badge { margin-left: auto; padding: 5px 9px; border-radius: 999px; color: var(--success); background: #eafaf3; font-family: var(--pop); font-size: .64rem; letter-spacing: .08em; }
+
+        .content { padding: 23px 16px 25px; }
+        .screen { display: none; }
+        .active-screen { display: block; animation: screenIn .38s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes screenIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .stepper-card {
+            display: grid;
+            grid-template-columns: 1fr 42px 1fr;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 17px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 21px;
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-node {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px;
+            border-radius: 14px;
+            color: #9d929a;
+            background: #f6f2f5;
+        }
+        .step-num {
+            width: 30px;
+            height: 30px;
+            flex: 0 0 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            color: #9d929a;
+            background: #e9e3e7;
+            font-family: var(--pop);
+            font-size: .82rem;
+        }
+        .step-copy { min-width: 0; display: flex; flex-direction: column; line-height: 1.1; }
+        .step-copy small { font-family: var(--pop); font-size: .55rem; letter-spacing: .08em; }
+        .step-copy strong { margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .75rem; }
+        .step-node.current { color: var(--brand-deep); background: var(--brand-soft); }
+        .step-node.current .step-num { color: white; background: linear-gradient(145deg, var(--brand), var(--brand-2)); box-shadow: 0 4px 0 var(--brand-deep); }
+        .step-node.done { color: var(--cyan-deep); background: var(--cyan-soft); }
+        .step-node.done .step-num { color: white; background: linear-gradient(145deg, var(--cyan), #47d7e9); box-shadow: 0 4px 0 var(--cyan-deep); }
+        .step-link { height: 6px; overflow: hidden; border-radius: 99px; background: #eee7eb; }
+        .step-link span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--brand), var(--cyan)); }
+        .step-link.done span { width: 100%; }
+
+        .hero-panel {
+            position: relative;
+            overflow: hidden;
+            padding: 22px 18px 18px;
+            border-radius: 27px;
+            color: white;
+            background:
+                radial-gradient(circle at 89% 16%, rgba(255,210,71,.9) 0 12%, transparent 12.5%),
+                linear-gradient(145deg, #9b004f 0%, #d10068 54%, #f72f88 100%);
+            box-shadow: 0 18px 34px rgba(164,0,82,.24);
+        }
+        .hero-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: .22;
+            background: repeating-linear-gradient(120deg, transparent 0 18px, white 18px 20px);
+        }
+        .hero-panel::after {
+            content: "";
+            position: absolute;
+            right: -50px;
+            bottom: -62px;
+            width: 170px;
+            height: 170px;
+            border: 24px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+        }
+        .hero-panel > * { position: relative; z-index: 1; }
+        .hero-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 999px; color: #774000; background: var(--gold); font-size: .7rem; font-weight: 900; box-shadow: 0 4px 0 var(--gold-deep); }
+        .hero-panel h1 { margin: 15px 0 5px; font-size: 1.27rem; line-height: 1.45; }
+        .hero-panel h1 strong { display: block; margin-top: 3px; font-size: clamp(2rem, 9vw, 2.75rem); line-height: 1.08; color: #fff8bb; text-shadow: 0 4px 0 rgba(93,0,45,.42); }
+        .hero-note { margin: 8px 0 0; color: #ffdbea; font-size: .74rem; line-height: 1.55; }
+
+        .premium-ticket {
+            position: relative;
+            margin: 16px 0;
+            padding: 20px 18px 18px;
+            overflow: hidden;
+            border: 1px solid #f0d98a;
+            border-radius: 24px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,248,208,.96)),
+                #fffbe8;
+            box-shadow: var(--shadow-md), inset 0 0 0 4px rgba(255,255,255,.72);
+        }
+        .premium-ticket::before,
+        .premium-ticket::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 26px;
+            height: 26px;
+            margin-top: -13px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px #eadfe6;
+        }
+        .premium-ticket::before { left: -14px; }
+        .premium-ticket::after { right: -14px; }
+        .ticket-shine {
+            position: absolute;
+            inset: -30% auto -30% -90%;
+            width: 45%;
+            transform: skewX(-22deg);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.92), transparent);
+            animation: ticketSweep 3.4s infinite;
+        }
+        @keyframes ticketSweep { 0%,55% { left:-90%; } 82%,100% { left:150%; } }
+        .ticket-header { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 11px; border-bottom: 1px dashed #dfc98a; }
+        .ticket-header span { color: #9a6800; font-family: var(--pop); font-size: .66rem; letter-spacing: .13em; }
+        .ticket-header b { padding: 4px 8px; border-radius: 999px; color: white; background: var(--brand); font-size: .65rem; }
+        .ticket-body { position: relative; z-index: 2; padding: 15px 0 10px; text-align: center; }
+        .ticket-body small { color: #a06900; font-size: .78rem; font-weight: 900; }
+        .ticket-main { margin: 5px 0 0; color: var(--brand-deep); font-weight: 900; font-size: 1.25rem; }
+        .ticket-main strong { display: block; margin-top: 2px; color: var(--brand); font-family: var(--pop); font-size: clamp(2.65rem, 13vw, 3.65rem); line-height: .95; text-shadow: 0 4px 0 white; }
+        .ticket-main strong span { font-family: var(--jp); font-size: .48em; }
+        .ticket-footer { position: relative; z-index: 2; display: flex; justify-content: center; gap: 7px; flex-wrap: wrap; padding-top: 11px; border-top: 1px dashed #dfc98a; }
+        .ticket-footer span { padding: 5px 9px; border-radius: 999px; color: #755400; background: rgba(255,210,71,.28); font-size: .65rem; font-weight: 900; }
+        .premium-ticket.used { filter: grayscale(.15); opacity: .68; }
+        .premium-ticket.used::after {
+            content: "USED";
+            left: 50%; right: auto; top: 50%;
+            width: auto; height: auto; margin: 0;
+            padding: 5px 17px;
+            transform: translate(-50%,-50%) rotate(-14deg);
+            color: rgba(202,37,68,.88);
+            border: 6px solid rgba(202,37,68,.88);
+            border-radius: 13px;
+            background: transparent;
+            box-shadow: none;
+            font: 700 2.7rem/1 var(--pop);
+            letter-spacing: .05em;
+            animation: stampIn .35s cubic-bezier(.2,1.5,.5,1) both;
+            z-index: 10;
+        }
+        @keyframes stampIn { from { opacity:0; transform:translate(-50%,-50%) scale(2.4) rotate(0); } }
+
+        .action-card {
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            gap: 12px;
+            align-items: center;
+            margin: 15px 0;
+            padding: 14px;
+            border: 1px solid #ffd3e4;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #fff, #fff3f8);
+            box-shadow: var(--shadow-sm);
+        }
+        .action-card.blue { border-color: #bfeef4; background: linear-gradient(145deg, #fff, #effcff); }
+        .action-icon { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 16px; color: white; background: linear-gradient(145deg, var(--brand), var(--brand-2)); box-shadow: 0 6px 0 var(--brand-deep); font-size: 1.45rem; }
+        .blue .action-icon { background: linear-gradient(145deg, var(--cyan), #46d8e9); box-shadow: 0 6px 0 var(--cyan-deep); }
+        .action-copy { text-align: left; }
+        .action-copy small { color: var(--brand); font-family: var(--pop); font-size: .63rem; letter-spacing: .1em; }
+        .blue .action-copy small { color: var(--cyan-deep); }
+        .action-copy strong { display: block; margin-top: 3px; font-size: .93rem; }
+        .action-copy p { margin: 4px 0 0; color: var(--muted); font-size: .7rem; line-height: 1.45; }
+
+        .timer-panel {
+            --progress: 100;
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 14px;
+            align-items: center;
+            margin: 15px 0;
+            padding: 14px;
+            border-radius: 23px;
+            color: white;
+            background: linear-gradient(145deg, #2c2630, #131015);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.13), 0 14px 28px rgba(23,16,24,.16);
+        }
+        .timer-panel.is-urgent { background: linear-gradient(145deg, #4e101a, #1d090d); }
+        .timer-ring {
+            width: 104px;
+            height: 104px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: conic-gradient(var(--gold) calc(var(--progress) * 1%), rgba(255,255,255,.12) 0);
+            box-shadow: 0 0 20px rgba(255,210,71,.15);
+            transition: background .35s linear;
+        }
+        .timer-panel.blue .timer-ring { background: conic-gradient(#59eadb calc(var(--progress) * 1%), rgba(255,255,255,.12) 0); }
+        .timer-inner { width: 84px; height: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; background: #1e1a21; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+        .timer-inner small { color: #d9cdd5; font-size: .58rem; }
+        .timer-value { margin-top: 2px; color: var(--gold); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1.48rem; font-weight: 900; letter-spacing: .02em; text-shadow: 0 0 14px rgba(255,210,71,.3); }
+        .timer-panel.blue .timer-value { color: #63efdf; text-shadow: 0 0 14px rgba(99,239,223,.28); }
+        .timer-copy { text-align: left; }
+        .timer-copy small { color: #baaeb6; font-family: var(--pop); font-size: .62rem; letter-spacing: .1em; }
+        .timer-copy strong { display: block; margin-top: 4px; font-size: .94rem; }
+        .timer-copy p { margin: 6px 0 0; color: #cfc5cb; font-size: .68rem; line-height: 1.55; }
+
+        .staff-console {
+            position: relative;
+            overflow: hidden;
+            margin-top: 17px;
+            padding: 16px;
+            border: 2px solid #f0a0be;
+            border-radius: 23px;
+            background: repeating-linear-gradient(-45deg, #fff2f7 0 12px, #fff9fb 12px 24px);
+        }
+        .staff-console.blue { border-color: #7edeea; background: repeating-linear-gradient(-45deg, #effcff 0 12px, #f9feff 12px 24px); }
+        .staff-console::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(120deg, transparent 0 45%, rgba(255,255,255,.75) 50%, transparent 55%); transform:translateX(-120%); animation:consoleSweep 4.2s infinite; }
+        @keyframes consoleSweep { 0%,65% { transform:translateX(-120%); } 90%,100% { transform:translateX(120%); } }
+        .staff-heading { position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px; }
+        .staff-label { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; color:white; background:var(--danger); font-family:var(--pop); font-size:.65rem; letter-spacing:.08em; }
+        .blue .staff-label { background:var(--cyan-deep); }
+        .staff-heading span:last-child { color:var(--danger); font-size:.68rem; font-weight:900; }
+        .blue .staff-heading span:last-child { color:var(--cyan-deep); }
+
+        .primary-button {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            min-height: 64px;
+            border: 0;
+            border-radius: 18px;
+            padding: 11px 48px 11px 14px;
+            color: white;
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            box-shadow: 0 7px 0 var(--brand-deep), 0 12px 22px rgba(142,0,72,.18);
+            cursor: pointer;
+            text-align: left;
+            transition: transform .1s, box-shadow .1s;
+        }
+        .primary-button::after { content:"›"; position:absolute; right:17px; top:50%; transform:translateY(-50%); font-size:2rem; font-weight:500; }
+        .primary-button:active { transform:translateY(6px); box-shadow:0 1px 0 var(--brand-deep); }
+        .primary-button.blue { background:linear-gradient(135deg,var(--cyan),#45d8e9); box-shadow:0 7px 0 var(--cyan-deep),0 12px 22px rgba(0,117,137,.18); }
+        .primary-button.blue:active { box-shadow:0 1px 0 var(--cyan-deep); }
+        .primary-button .button-kicker { display:block; color:rgba(255,255,255,.78); font-family:var(--pop); font-size:.57rem; letter-spacing:.1em; }
+        .primary-button .button-main { display:block; margin-top:2px; font-size:1rem; font-weight:900; }
+        .primary-button.attention { animation:buttonPulse 1.9s infinite; }
+        @keyframes buttonPulse { 50% { transform:scale(1.018); filter:brightness(1.06); } }
+        .primary-button:disabled { animation:none; cursor:default; }
+        .staff-note { position:relative; z-index:1; margin:11px 2px 0; color:var(--danger); font-size:.69rem; font-weight:900; line-height:1.55; }
+        .blue .staff-note { color:var(--cyan-deep); }
+
+        .outline-button {
+            width:100%; min-height:52px; margin:1px 0 14px; padding:10px 14px; border:2px solid var(--cyan); border-radius:16px; color:var(--cyan-deep); background:white; box-shadow:0 5px 0 #9bdde5; font-weight:900; cursor:pointer;
+        }
+        .outline-button:active { transform:translateY(4px); box-shadow:0 1px 0 #9bdde5; }
+
+        .security-foot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 18px;
+            color: #b8adb5;
+            font-size: .58rem;
+        }
+        .security-foot::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--success); box-shadow:0 0 0 4px rgba(20,168,107,.1); }
+        #fp-display { max-width: 190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+        .status-card {
+            padding: 20px 8px 12px;
+            text-align: center;
+        }
+        .status-visual {
+            position: relative;
+            width: 112px;
+            height: 112px;
+            margin: 8px auto 18px;
+            display: grid;
+            place-items: center;
+            border-radius: 34px;
+            background: linear-gradient(145deg, #fff, #fff0f6);
+            box-shadow: var(--shadow-md), inset 0 0 0 2px #ffd5e5;
+            font-size: 3.9rem;
+        }
+        .status-visual.blue { background:linear-gradient(145deg,#fff,#ecfcff); box-shadow:var(--shadow-md),inset 0 0 0 2px #bceef4; }
+        .status-visual::after { content:""; position:absolute; inset:-8px; border:2px dashed rgba(209,0,104,.24); border-radius:40px; animation:spinSlow 12s linear infinite; }
+        .status-visual.blue::after { border-color:rgba(0,174,202,.28); }
+        @keyframes spinSlow { to { transform:rotate(360deg); } }
+        .status-card h2 { margin:0; font-size:1.4rem; }
+        .status-card p { margin:11px auto 0; max-width:330px; color:var(--muted); font-size:.85rem; line-height:1.7; font-weight:700; }
+        .status-callout { margin:20px 0 0; padding:13px; border-radius:16px; color:#8f5400; background:#fff6d8; font-size:.72rem; font-weight:900; line-height:1.55; }
+
+        .complete-screen { position:relative; overflow:hidden; padding:18px 7px 12px; text-align:center; }
+        .complete-burst { position:absolute; left:50%; top:98px; width:310px; height:310px; transform:translate(-50%,-50%); border-radius:50%; background:repeating-conic-gradient(rgba(255,210,71,.34) 0 12deg, transparent 12deg 24deg); animation:spinSlow 15s linear infinite; }
+        .complete-icon { position:relative; z-index:1; width:116px; height:116px; margin:9px auto 18px; display:grid; place-items:center; border-radius:38px; color:white; background:linear-gradient(145deg,#11ac70,#48d99b); box-shadow:0 12px 0 #08754a,0 24px 50px rgba(8,117,74,.23); font-size:4rem; animation:completePop .55s cubic-bezier(.2,1.5,.5,1) both; }
+        @keyframes completePop { from { opacity:0; transform:scale(.3) rotate(-15deg); } }
+        .complete-screen h2 { position:relative; z-index:1; margin:0; color:var(--success); font-family:var(--pop); font-size:2rem; }
+        .complete-screen p { position:relative; z-index:1; margin:11px 0 0; color:var(--muted); font-size:.87rem; line-height:1.7; font-weight:700; }
+        .complete-close { position:relative; z-index:1; margin-top:20px; padding:14px; border-radius:18px; color:#7f5200; background:#fff6d3; font-size:.75rem; font-weight:900; line-height:1.55; }
+        .confetti-piece { position:fixed; z-index:4000; top:-20px; width:10px; height:18px; border-radius:3px; pointer-events:none; animation:confettiFall var(--duration) linear forwards; }
+        @keyframes confettiFall { to { transform:translate3d(var(--drift),110dvh,0) rotate(760deg); opacity:.85; } }
 
         .overlay {
             position: fixed;
             inset: 0;
-            z-index: 2000;
+            z-index: 3000;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 18px;
-            background: rgba(29,20,32,.7);
-            backdrop-filter: blur(6px);
+            padding: max(15px,env(safe-area-inset-top)) 14px max(15px,env(safe-area-inset-bottom));
+            background: rgba(28,7,20,.72);
+            backdrop-filter: blur(9px);
             opacity: 0;
-            transition: opacity .25s;
+            transition: opacity .23s ease;
         }
         .overlay.show { display:flex; opacity:1; }
         .modal {
-            width: 100%;
-            max-width: 360px;
-            max-height: min(88vh, 690px);
-            overflow-y: auto;
-            padding: 22px 19px 20px;
-            border: 4px solid #ff9fc3;
-            border-radius: 25px;
-            background: white;
-            text-align: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,.3);
-            transform: translateY(18px) scale(.96);
-            transition: transform .25s cubic-bezier(.2,1.2,.5,1);
+            width:100%; max-width:380px; max-height:calc(100dvh - 30px); overflow-y:auto; padding:23px 19px 19px; border:1px solid rgba(255,255,255,.94); border-radius:28px; background:white; box-shadow:0 28px 80px rgba(18,0,10,.4); text-align:center; transform:translateY(20px) scale(.95); transition:transform .25s cubic-bezier(.2,1.2,.5,1);
         }
         .overlay.show .modal { transform:none; }
-        .modal-icon {
-            width: 66px; height: 66px;
-            display: grid;
-            place-items: center;
-            margin: 0 auto 10px;
-            border-radius: 22px;
-            background: #fff0f5;
-            font-size: 2rem;
-        }
-        .modal h3 { margin: 4px 0 8px; font-size: 1.3rem; }
-        .modal p { color: #514a55; line-height: 1.6; font-weight: 700; font-size: .9rem; }
-        .modal-btn-group { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:17px; }
-        .modal .btn { min-height: 50px; border-radius: 15px; box-shadow: 0 5px 0 var(--pink-deep); }
-        .modal .btn.secondary {
-            color: #4f4952;
-            background: #ece9ed;
-            box-shadow: 0 5px 0 #bbb4bd;
-        }
-        .modal .btn.secondary:active { box-shadow:0 1px 0 #bbb4bd; }
-        .usage-list { text-align:left; display:grid; gap:10px; margin:15px 0; }
-        .usage-step {
-            display:grid;
-            grid-template-columns:32px 1fr;
-            gap:9px;
-            align-items:start;
-            padding:10px;
-            border-radius:14px;
-            background:#f7fbfc;
-        }
-        .usage-step span {
-            display:grid; place-items:center;
-            width:32px; height:32px;
-            color:white; background:var(--cyan);
-            border-radius:10px; font-weight:900;
-        }
-        .usage-step b { font-size:.88rem; line-height:1.5; }
-        .usage-img { width:100%; max-width:230px; display:block; margin:10px auto; border:2px solid #e9e5ea; border-radius:14px; }
+        .modal-security { display:inline-flex; align-items:center; gap:7px; padding:6px 11px; border-radius:999px; color:white; background:repeating-linear-gradient(135deg,#bd004f 0 13px,#e62b80 13px 26px); font-family:var(--pop); font-size:.65rem; letter-spacing:.1em; }
+        .modal-security.blue { background:repeating-linear-gradient(135deg,#00778b 0 13px,#00b1ce 13px 26px); }
+        .modal-icon { width:68px; height:68px; margin:17px auto 11px; display:grid; place-items:center; border-radius:22px; color:white; background:linear-gradient(145deg,var(--brand),var(--brand-2)); box-shadow:0 7px 0 var(--brand-deep); font-size:2rem; }
+        .modal-icon.blue { background:linear-gradient(145deg,var(--cyan),#49d9e9); box-shadow:0 7px 0 var(--cyan-deep); }
+        .modal h3 { margin:0; font-size:1.28rem; }
+        .modal p { margin:8px 0 0; color:var(--muted); font-size:.82rem; line-height:1.65; font-weight:700; }
+        .modal-warning { margin:14px 0 0; padding:10px; border-radius:13px; color:var(--danger); background:#fff0f4; font-size:.7rem; font-weight:900; line-height:1.5; }
+        .modal-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:17px; }
+        .modal-button { min-height:52px; border:0; border-radius:15px; color:white; background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:0 5px 0 var(--brand-deep); font-weight:900; cursor:pointer; }
+        .modal-button.blue { background:linear-gradient(135deg,var(--cyan),#46d9e9); box-shadow:0 5px 0 var(--cyan-deep); }
+        .modal-button.secondary { color:#554c53; background:#eeeaed; box-shadow:0 5px 0 #bdb5bb; }
+        .modal-button:active { transform:translateY(4px); box-shadow:0 1px 0 currentColor; }
+        .usage-list { display:grid; gap:9px; margin:15px 0; text-align:left; }
+        .usage-step { display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:start; padding:11px; border-radius:15px; background:#f4fbfc; }
+        .usage-step span { width:34px; height:34px; display:grid; place-items:center; border-radius:11px; color:white; background:var(--cyan); font-family:var(--pop); font-size:.82rem; }
+        .usage-step b { font-size:.82rem; line-height:1.55; }
+        .usage-img { display:block; width:100%; max-width:230px; margin:10px auto; border:2px solid #ebe4e8; border-radius:15px; }
 
-        #fp-display { margin-top:10px; color:#c1b9c4; font-size:.55rem; word-break:break-all; }
+        .app-footer { padding:18px 15px calc(20px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; align-items:center; gap:3px; color:#a0949c; background:#fbf7f9; font-size:.62rem; }
+        .app-footer b { color:#847881; font-size:.66rem; }
 
-        @media (max-width: 365px) {
-            .page-shell { padding-left:8px; padding-right:8px; }
-            .content { padding-left:13px; padding-right:13px; }
-            .ticket-container { border-radius:22px; }
-            .brand-header { padding-left:10px; padding-right:10px; }
-            .modal-btn-group { grid-template-columns:1fr; }
+        @media (max-width: 375px) {
+            .app-shell { padding-left:7px; padding-right:7px; }
+            .app-card { border-radius:27px; }
+            .app-header { padding-left:14px; padding-right:14px; }
+            .content { padding-left:12px; padding-right:12px; }
+            .stepper-card { grid-template-columns:1fr 26px 1fr; gap:4px; padding:8px; }
+            .step-node { gap:5px; padding:5px; }
+            .step-num { width:27px; height:27px; flex-basis:27px; }
+            .timer-panel { grid-template-columns:100px 1fr; padding:11px; }
+            .timer-ring { width:92px; height:92px; }
+            .timer-inner { width:74px; height:74px; }
+            .timer-value { font-size:1.3rem; }
         }
+
         @media (min-width: 700px) {
-            .page-shell { padding-top: 20px; padding-bottom: 20px; }
-            .ticket-container { min-height: calc(100vh - 40px); min-height: calc(100dvh - 40px); }
+            .app-shell { padding-top:20px; padding-bottom:20px; }
+            .app-card { min-height:calc(100dvh - 40px); }
         }
+
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; }
+            *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.001ms !important; }
         }
     </style>
 </head>
 <body>
-    <main class="page-shell">
-        <div class="ticket-container">
-            <header class="brand-header">
-                <div class="brand">TECMOPIA <span class="brand-star">★</span></div>
-                <div class="brand-sub">公津の杜店｜SPECIAL COUPON</div>
+    <main class="app-shell">
+        <div class="app-card">
+            <header class="app-header">
+                <span class="header-orb one"></span>
+                <span class="header-orb two"></span>
+                <span class="header-orb three"></span>
+
+                <div class="header-topline">
+                    <span class="location-chip">📍 成田ユアエルム 3F</span>
+                    <span class="daily-chip">1日1回</span>
+                </div>
+
+                <div class="logo-plate">
+                    <img src="main.png" alt="TECMOPIA">
+                </div>
+
+                <div class="header-caption">
+                    <strong>SPECIAL COUPON</strong>
+                    <span>テクモピア公津の杜店</span>
+                </div>
             </header>
+
+            <div class="auth-strip">
+                <div class="auth-icon">🔒</div>
+                <div class="auth-copy">
+                    <small>店頭QRからアクセスした方限定</small>
+                    <strong>セキュアクーポンページ</strong>
+                </div>
+                <span class="auth-badge">SECURE</span>
+            </div>
 
             <div class="content">
                 <section id="screen-step1" class="screen">
-                    <div class="step-track" aria-label="クーポン利用手順">
-                        <div class="step-node current"><b>STEP 1</b>スタッフ確認</div>
-                        <div class="step-line"></div>
-                        <div class="step-node"><b>STEP 2</b>クーポン使用</div>
-                    </div>
-                    <div class="anti-fraud-bar"></div>
-
-                    <div class="hero-copy">
-                        <div class="eyebrow">🎁 ポスター発見者限定</div>
-                        <h1>3階テクモピアで使える<br><strong>クレーンゲーム<br><span>1回無料</span></strong><br>クーポンをプレゼント！</h1>
-                    </div>
-
-                    <div class="coupon-ticket">
-                        <span class="ticket-kicker">SPECIAL TICKET</span>
-                        <p class="ticket-main">クレーンゲーム<strong>1<span>回</span> FREE</strong></p>
+                    <div class="stepper-card" aria-label="クーポン利用手順">
+                        <div class="step-node current">
+                            <span class="step-num">1</span>
+                            <span class="step-copy"><small>STEP 1</small><strong>スタッフ確認</strong></span>
+                        </div>
+                        <div class="step-link"><span></span></div>
+                        <div class="step-node">
+                            <span class="step-num">2</span>
+                            <span class="step-copy"><small>STEP 2</small><strong>クーポン使用</strong></span>
+                        </div>
                     </div>
 
-                    <div class="guide-card">
-                        <div class="guide-num">1</div>
-                        <div><b>3階カウンターへ</b><small>スタッフにこの画面を見せてください。</small></div>
+                    <section class="hero-panel">
+                        <span class="hero-label">🎁 ポスター発見者限定</span>
+                        <h1>3階テクモピアで使える<strong>クレーンゲーム 1回無料</strong></h1>
+                        <p class="hero-note">画面を閉じずに3階カウンターまでお越しください。</p>
+                    </section>
+
+                    <div class="premium-ticket">
+                        <span class="ticket-shine"></span>
+                        <div class="ticket-header">
+                            <span>TECMOPIA SPECIAL TICKET</span>
+                            <b>店舗限定</b>
+                        </div>
+                        <div class="ticket-body">
+                            <small>クレーンゲーム</small>
+                            <p class="ticket-main"><strong>1<span>回</span> FREE</strong></p>
+                        </div>
+                        <div class="ticket-footer">
+                            <span>当日限定</span>
+                            <span>お一人様1回</span>
+                            <span>スタッフ確認制</span>
+                        </div>
                     </div>
 
-                    <div class="timer-box">
-                        <div class="timer-label">⏱ 発券できる残り時間</div>
-                        <div id="timer-p1" class="timer-value">10:00</div>
+                    <div class="action-card">
+                        <div class="action-icon">🏁</div>
+                        <div class="action-copy">
+                            <small>NEXT ACTION</small>
+                            <strong>3階カウンターへお越しください</strong>
+                            <p>到着したらスタッフにこの画面を見せてください。</p>
+                        </div>
                     </div>
 
-                    <div class="staff-zone">
-                        <div class="staff-label">🔒 STAFF ONLY</div>
-                        <button class="btn" onclick="openModal('confirm-issue')">
-                            <span class="btn-main-text">スタッフが確認</span>
-                            <span class="btn-sub-text">確認後、クーポンを発券します</span>
+                    <div id="timer-panel-p1" class="timer-panel">
+                        <div class="timer-ring">
+                            <div class="timer-inner">
+                                <small>残り時間</small>
+                                <div id="timer-p1" class="timer-value" aria-live="polite">10:00</div>
+                            </div>
+                        </div>
+                        <div class="timer-copy">
+                            <small>ISSUE LIMIT</small>
+                            <strong>発券できる残り時間</strong>
+                            <p>時間内に3階カウンターでスタッフ確認を受けてください。</p>
+                        </div>
+                    </div>
+
+                    <section class="staff-console">
+                        <div class="staff-heading">
+                            <span class="staff-label">🔐 STAFF ONLY</span>
+                            <span>スタッフ操作エリア</span>
+                        </div>
+                        <button class="primary-button" type="button" onclick="openModal('confirm-issue')">
+                            <span class="button-kicker">STAFF CONFIRMATION</span>
+                            <span class="button-main">確認してクーポンを発券</span>
                         </button>
-                        <p class="staff-note">ここから先はスタッフが操作します。お客様が先に押すと無効になる場合があります。</p>
-                    </div>
-                    <div id="fp-display"></div>
+                        <p class="staff-note">お客様だけで操作しないでください。先に押すとクーポンが無効になる場合があります。</p>
+                    </section>
+
+                    <div class="security-foot"><span id="fp-display">端末確認中...</span></div>
                 </section>
 
                 <section id="screen-step2" class="screen">
-                    <div class="step-track" aria-label="クーポン利用手順">
-                        <div class="step-node done"><b>✓ STEP 1</b>発券完了</div>
-                        <div class="step-line done"></div>
-                        <div class="step-node current" style="background:linear-gradient(135deg,var(--cyan),#43d4e5);border-color:#9be8f1;box-shadow:0 6px 14px rgba(7,185,211,.25)"><b>STEP 2</b>クーポン使用</div>
-                    </div>
-                    <div class="anti-fraud-bar cyan"></div>
-
-                    <div id="ticket" class="ticket-box">
-                        <span class="ticket-label">✓ 発券完了</span>
-                        <h2 class="ticket-title">クレーンゲーム<strong>1回無料</strong></h2>
-                    </div>
-
-                    <button class="btn-outline" onclick="openModal('usage-modal')">✨ 対象台と使いかたを確認</button>
-
-                    <div class="guide-card blue">
-                        <div class="guide-num">2</div>
-                        <div><b>遊ぶ台を決めてスタッフを呼ぶ</b><small>この画面を見せ、スタッフの前で使用してください。</small></div>
+                    <div class="stepper-card" aria-label="クーポン利用手順">
+                        <div class="step-node done">
+                            <span class="step-num">✓</span>
+                            <span class="step-copy"><small>STEP 1</small><strong>発券完了</strong></span>
+                        </div>
+                        <div class="step-link done"><span></span></div>
+                        <div class="step-node current">
+                            <span class="step-num">2</span>
+                            <span class="step-copy"><small>STEP 2</small><strong>クーポン使用</strong></span>
+                        </div>
                     </div>
 
-                    <div class="timer-box cyan-timer">
-                        <div class="timer-label">⏱ クーポンを使える残り時間</div>
-                        <div id="timer-p2" class="timer-value">30:00</div>
+                    <div id="ticket" class="premium-ticket">
+                        <span class="ticket-shine"></span>
+                        <div class="ticket-header">
+                            <span>ISSUED COUPON</span>
+                            <b style="background:var(--cyan)">✓ 発券済み</b>
+                        </div>
+                        <div class="ticket-body">
+                            <small>クレーンゲーム</small>
+                            <p class="ticket-main"><strong>1<span>回</span> FREE</strong></p>
+                        </div>
+                        <div class="ticket-footer">
+                            <span>対象台のみ</span>
+                            <span>スタッフ確認制</span>
+                        </div>
                     </div>
 
-                    <div class="staff-zone" style="border-color:#78dbe7;background:repeating-linear-gradient(-45deg,#effcff 0 11px,#f8feff 11px 22px)">
-                        <div class="staff-label" style="background:var(--cyan-deep)">🔒 STAFF CHECK</div>
-                        <button id="use-btn" class="btn btn-cyan use-btn-animated" onclick="openModal('confirm-use')">
-                            <span class="btn-main-text">クーポンを使用</span>
-                            <span class="btn-sub-text">スタッフ確認後に押してください</span>
+                    <button class="outline-button" type="button" onclick="openModal('usage-modal')">✨ 対象台と使いかたを確認する</button>
+
+                    <div class="action-card blue">
+                        <div class="action-icon">🎮</div>
+                        <div class="action-copy">
+                            <small>NEXT ACTION</small>
+                            <strong>遊ぶ台を決めてスタッフを呼ぶ</strong>
+                            <p>スタッフの目の前で、下の使用ボタンを押してください。</p>
+                        </div>
+                    </div>
+
+                    <div id="timer-panel-p2" class="timer-panel blue">
+                        <div class="timer-ring">
+                            <div class="timer-inner">
+                                <small>残り時間</small>
+                                <div id="timer-p2" class="timer-value" aria-live="polite">30:00</div>
+                            </div>
+                        </div>
+                        <div class="timer-copy">
+                            <small>USE LIMIT</small>
+                            <strong>クーポンを使える残り時間</strong>
+                            <p>発券後30分以内に対象のクレーンゲームでご利用ください。</p>
+                        </div>
+                    </div>
+
+                    <section class="staff-console blue">
+                        <div class="staff-heading">
+                            <span class="staff-label">🔐 STAFF CHECK</span>
+                            <span>利用時に確認</span>
+                        </div>
+                        <button id="use-btn" class="primary-button blue attention" type="button" onclick="openModal('confirm-use')">
+                            <span class="button-kicker">USE COUPON</span>
+                            <span class="button-main">スタッフ確認後にクーポンを使用</span>
                         </button>
                         <p class="staff-note">必ずスタッフを呼んでから操作してください。事前に押すと無効となります。</p>
-                    </div>
+                    </section>
                 </section>
 
                 <section id="screen-expired-p1" class="screen status-card">
-                    <span class="status-icon">⌛</span>
+                    <div class="status-visual">⌛</div>
                     <h2>発券期限が切れました</h2>
-                    <p>もう一度、店頭の二次元コードを<br>読み取るところからやり直してください。</p>
+                    <p>もう一度、店頭の二次元コードを読み取るところからやり直してください。</p>
+                    <div class="status-callout">店頭ポスターの二次元コードから再アクセスすると、発券手続きをやり直せます。</div>
                 </section>
 
                 <section id="screen-expired-p2" class="screen status-card">
-                    <span class="status-icon">❌</span>
+                    <div class="status-visual blue">❌</div>
                     <h2>利用期限が切れました</h2>
-                    <p>発券から30分を過ぎたため、<br>このクーポンは利用できません。</p>
+                    <p>発券から30分を過ぎたため、このクーポンは利用できません。</p>
+                    <div class="status-callout">発券後は遊ぶ台を決めてから、早めにスタッフをお呼びください。</div>
                 </section>
 
                 <section id="screen-already" class="screen status-card">
-                    <span class="status-icon">✅</span>
+                    <div class="status-visual blue">✅</div>
                     <h2>本日は利用済みです</h2>
-                    <p>このクーポンは1日1回までです。<br>また明日、遊びに来てください！</p>
+                    <p>このクーポンは1日1回までです。また明日、店頭のポスターを探してみてください。</p>
+                    <div class="status-callout">ご利用ありがとうございました。画面は閉じて問題ありません。</div>
                 </section>
 
                 <section id="screen-shared" class="screen status-card">
-                    <span class="status-icon">🔐</span>
+                    <div class="status-visual">🔐</div>
                     <h2>直接アクセスできません</h2>
-                    <p>共有されたURLからは開けません。<br>店頭の二次元コードを読み取ってください。</p>
+                    <p>共有されたURLや通常のリンクからは開けません。店頭の二次元コードを読み取ってください。</p>
+                    <div class="status-callout">このクーポンは、店頭ポスターを見つけた方だけが利用できます。</div>
+                </section>
+
+                <section id="screen-complete" class="screen complete-screen">
+                    <div class="complete-burst"></div>
+                    <div class="complete-icon">✓</div>
+                    <h2>COUPON USED!</h2>
+                    <p>クーポンの利用が完了しました。<br>スタッフの案内に従ってゲームをお楽しみください。</p>
+                    <div class="complete-close">このクーポンは使用済みです。<br>確認後、このタブを完全に閉じてください。</div>
+                    <div class="security-foot"><span id="complete-fp">ID確認済み</span></div>
                 </section>
             </div>
+
+            <footer class="app-footer">
+                <b>TECMOPIA ROCK★DOM 公津の杜店</b>
+                <span>店舗限定・1日1回の特別クーポンです</span>
+            </footer>
         </div>
     </main>
 
-    <div id="confirm-issue" class="overlay" role="dialog" aria-modal="true">
+    <div id="confirm-issue" class="overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-issue-title">
         <div class="modal">
+            <span class="modal-security">🔒 STAFF ONLY</span>
             <div class="modal-icon">👩‍💼</div>
-            <h3 style="color:var(--danger)">スタッフ専用確認</h3>
-            <p>お客様が3階カウンターへ到着し、画面と内容を確認しましたか？</p>
-            <div class="modal-btn-group">
-                <button class="btn" onclick="issueTicket()"><span class="btn-main-text">はい、発券</span></button>
-                <button class="btn secondary" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
+            <h3 id="confirm-issue-title">スタッフ専用確認</h3>
+            <p>お客様が3階カウンターへ到着し、画面とクーポン内容を確認しましたか？</p>
+            <div class="modal-warning">確認後に発券すると、30分の利用タイマーが開始します。</div>
+            <div class="modal-actions">
+                <button class="modal-button" type="button" onclick="issueTicket()">はい、発券</button>
+                <button class="modal-button secondary" type="button" onclick="closeModal()">戻る</button>
             </div>
         </div>
     </div>
 
-    <div id="confirm-use" class="overlay" role="dialog" aria-modal="true">
-        <div class="modal" style="border-color:#78dbe7">
-            <div class="modal-icon" style="background:var(--cyan-soft)">🎮</div>
-            <h3 style="color:var(--cyan-deep)">クーポンを使用します</h3>
-            <p>対象のゲーム機を決め、スタッフが利用画面を確認していますか？</p>
-            <div class="modal-btn-group">
-                <button class="btn btn-cyan" onclick="executeUse()"><span class="btn-main-text">はい、使用</span></button>
-                <button class="btn secondary" onclick="closeModal()"><span class="btn-main-text">戻る</span></button>
+    <div id="confirm-use" class="overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-use-title">
+        <div class="modal">
+            <span class="modal-security blue">🔒 STAFF CHECK</span>
+            <div class="modal-icon blue">🎮</div>
+            <h3 id="confirm-use-title">クーポンを使用します</h3>
+            <p>対象のゲーム機を決め、スタッフがこの利用画面を確認していますか？</p>
+            <div class="modal-warning" style="color:var(--cyan-deep);background:var(--cyan-soft)">使用ボタンを押すと元に戻せません。</div>
+            <div class="modal-actions">
+                <button class="modal-button blue" type="button" onclick="executeUse()">はい、使用</button>
+                <button class="modal-button secondary" type="button" onclick="closeModal()">戻る</button>
             </div>
         </div>
     </div>
 
-    <div id="usage-modal" class="overlay" role="dialog" aria-modal="true">
-        <div class="modal" style="border-color:#78dbe7">
-            <div class="modal-icon" style="background:var(--cyan-soft)">💡</div>
-            <h3 style="color:var(--cyan-deep)">クーポンの使いかた</h3>
+    <div id="usage-modal" class="overlay" role="dialog" aria-modal="true" aria-labelledby="usage-title">
+        <div class="modal">
+            <span class="modal-security blue">HOW TO USE</span>
+            <div class="modal-icon blue">💡</div>
+            <h3 id="usage-title">クーポンの使いかた</h3>
             <div class="usage-list">
                 <div class="usage-step"><span>1</span><b>遊びたいクレーンゲーム機を選びます。</b></div>
                 <div class="usage-step"><span>2</span><b>下の「1PLAY」マークがある台が対象です。</b></div>
             </div>
             <img src="https://raw.githubusercontent.com/tecmopia-kozunomori/special-gift/refs/heads/main/1play.png" class="usage-img" alt="1PLAY対象マーク">
             <div class="usage-list">
-                <div class="usage-step"><span>3</span><b>場所が決まったらスタッフを呼びます。</b></div>
+                <div class="usage-step"><span>3</span><b>遊ぶ台が決まったらスタッフを呼びます。</b></div>
                 <div class="usage-step"><span>4</span><b>スタッフの前で「クーポンを使用」を押します。</b></div>
             </div>
-            <button class="btn secondary" onclick="closeModal()"><span class="btn-main-text">とじる</span></button>
+            <button class="modal-button secondary" style="width:100%" type="button" onclick="closeModal()">とじる</button>
         </div>
     </div>
 
-
     <script>
-        const P1_LIMIT = 600;  // 10分（600秒）に変更
-        const P2_LIMIT = 1800; // 30分（1800秒）
+        const P1_LIMIT = 600;
+        const P2_LIMIT = 1800;
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbwSs8PhF2OVlTRL0lbMsdPkBOmbFJHrkhy6NAxRR2k7vsdXcuxqjNhesNn3vIkVfdXy/exec';
-        
+
         let timer = null;
-        let deviceFingerprint = "unknown"; // 端末識別IDを保持する変数
+        let deviceFingerprint = 'unknown';
 
         function getToday() {
             return new Date().toLocaleDateString('ja-JP');
         }
 
-        /* ============================================================
-           🛡️ 不正対策: ブラウザ・フィンガープリント生成関数
-           Canvasの描画差異や画面解像度等を組み合わせて端末固有のIDを生成
-        ============================================================ */
         async function generateDeviceFingerprint() {
             return new Promise((resolve) => {
                 try {
-                    // 1. Canvasフィンガープリント（OSやブラウザ固有の描画クセを抽出）
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 200; canvas.height = 50;
-                    ctx.textBaseline = "top";
+                    canvas.width = 200;
+                    canvas.height = 50;
+                    ctx.textBaseline = 'top';
                     ctx.font = "14px 'Arial'";
-                    ctx.fillStyle = "#f60"; ctx.fillRect(125,1,62,20);
-                    ctx.fillStyle = "#069"; ctx.fillText("tecmopia-gift", 2, 15);
-                    ctx.fillStyle = "rgba(102, 204, 0, 0.7)"; ctx.fillText("tecmopia-gift", 4, 17);
+                    ctx.fillStyle = '#f60';
+                    ctx.fillRect(125, 1, 62, 20);
+                    ctx.fillStyle = '#069';
+                    ctx.fillText('tecmopia-gift', 2, 15);
+                    ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+                    ctx.fillText('tecmopia-gift', 4, 17);
                     const canvasData = canvas.toDataURL();
 
-                    // 2. その他の端末・ブラウザ情報
                     const dataString = [
                         navigator.userAgent,
                         navigator.language,
-                        screen.width + "x" + screen.height,
+                        screen.width + 'x' + screen.height,
                         screen.colorDepth,
                         Intl.DateTimeFormat().resolvedOptions().timeZone,
                         canvasData
                     ].join('|||');
 
-                    // 3. 簡易的なハッシュ化 (32bit)
                     let hash = 0;
                     for (let i = 0; i < dataString.length; i++) {
                         const char = dataString.charCodeAt(i);
                         hash = ((hash << 5) - hash) + char;
-                        hash = hash & hash; 
+                        hash = hash & hash;
                     }
-                    // 正の16進数文字列にして返す
                     resolve(Math.abs(hash).toString(16));
-                } catch (e) {
-                    // 万が一エラーになっても処理を止めない
+                } catch (error) {
                     resolve('err-' + Date.now());
                 }
             });
         }
 
-        /* 🛡️ 多重ストレージ保存・取得・削除（WebViewで消去されにくくする工夫） */
         function setPersistentState(key, value) {
-            try { localStorage.setItem(key, value); } catch(e){}
-            try { sessionStorage.setItem(key, value); } catch(e){}
+            try { localStorage.setItem(key, value); } catch (error) {}
+            try { sessionStorage.setItem(key, value); } catch (error) {}
             document.cookie = `${key}=${value}; max-age=86400; path=/`;
         }
 
         function getPersistentState(key) {
-            let val = null;
-            try { val = localStorage.getItem(key); } catch(e){}
-            if (!val) { try { val = sessionStorage.getItem(key); } catch(e){} }
-            if (!val) {
-                const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
-                if (match) val = match[2];
+            let value = null;
+            try { value = localStorage.getItem(key); } catch (error) {}
+            if (!value) {
+                try { value = sessionStorage.getItem(key); } catch (error) {}
             }
-            return val;
+            if (!value) {
+                const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
+                if (match) value = match[2];
+            }
+            return value;
         }
 
-        // 🚨【バグ修正】古い時間データを完全に消去する関数
         function removePersistentState(key) {
-            try { localStorage.removeItem(key); } catch(e){}
-            try { sessionStorage.removeItem(key); } catch(e){}
+            try { localStorage.removeItem(key); } catch (error) {}
+            try { sessionStorage.removeItem(key); } catch (error) {}
             document.cookie = `${key}=; max-age=0; path=/`;
         }
 
-        // 初期化処理（非同期にしてフィンガープリント生成を待つ）
-        window.onload = async function() {
+        window.onload = async function () {
             try {
-                // 🛡️ 端末識別IDの生成
                 deviceFingerprint = await generateDeviceFingerprint();
                 const fpDisplay = document.getElementById('fp-display');
-                if(fpDisplay) fpDisplay.innerText = "ID: " + deviceFingerprint;
+                if (fpDisplay) fpDisplay.textContent = 'SECURE ID: ' + deviceFingerprint;
 
                 const params = new URLSearchParams(window.location.search);
                 const token = params.get('token');
                 const today = getToday();
 
-                // 🚨 1. QRコードからの正規アクセス時の処理
                 if (token === 'secret123') {
                     setPersistentState('tp_auth_' + today, 'true');
-                    
+
                     const currentPhase = getPersistentState('tp_phase_' + today);
-                    // 【バグ修正】期限切れの場合でもタイマーを完全にリセットし、最初からやり直せるようにする
                     if (!currentPhase || currentPhase === 'p1' || currentPhase === 'expired-p1') {
                         setPersistentState('tp_phase_' + today, 'p1');
-                        removePersistentState('tp_p1_start_' + today); // ここで過去の開始時間を完全に削除
+                        removePersistentState('tp_p1_start_' + today);
                     }
-                    
+
                     try {
-                        const randomStr = Math.random().toString(36).substring(2, 10);
-                        window.history.replaceState(null, '', '?ticket=' + randomStr);
-                    } catch(e) {}
+                        const randomString = Math.random().toString(36).substring(2, 10);
+                        window.history.replaceState(null, '', '?ticket=' + randomString);
+                    } catch (error) {}
                 } else if (window.location.search.length > 0 && !params.has('ticket')) {
                     showScreen('screen-shared');
                     return;
                 }
 
-                // 🚨 2. 本日の正規アクセス認証があるかチェック
                 if (getPersistentState('tp_auth_' + today) !== 'true') {
                     showScreen('screen-shared');
                     return;
                 }
 
-                // 🚨 3. 現在のフェーズから画面を完全復元
                 const phase = getPersistentState('tp_phase_' + today) || 'p1';
-                
+
                 if (phase === 'p1') {
                     showScreen('screen-step1');
                     startTimer('tp_p1_start_' + today, P1_LIMIT, 'timer-p1', 'screen-expired-p1', 'expired-p1');
@@ -849,35 +988,51 @@
                 } else if (phase === 'expired-p2') {
                     showScreen('screen-expired-p2');
                 }
-
-            } catch(error) {
-                console.error("システム復旧モード:", error);
+            } catch (error) {
+                console.error('システム復旧モード:', error);
                 showScreen('screen-step1');
                 startTimer('tp_p1_start_' + getToday(), P1_LIMIT, 'timer-p1', 'screen-expired-p1', 'expired-p1');
             }
         };
 
         function showScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+            document.querySelectorAll('.screen').forEach((screen) => screen.classList.remove('active-screen'));
             const target = document.getElementById(id);
-            if (target) target.classList.add('active-screen');
+            if (target) {
+                target.classList.add('active-screen');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function updateTimerDisplay(elementId, left, limit) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            const safeLeft = Math.max(0, left);
+            const minutes = String(Math.floor(safeLeft / 60)).padStart(2, '0');
+            const seconds = String(safeLeft % 60).padStart(2, '0');
+            element.textContent = `${minutes}:${seconds}`;
+
+            const panel = element.closest('.timer-panel');
+            if (panel) {
+                const progress = Math.max(0, Math.min(100, (safeLeft / limit) * 100));
+                panel.style.setProperty('--progress', progress.toFixed(2));
+                panel.classList.toggle('is-urgent', safeLeft <= 60);
+            }
         }
 
         function startTimer(storageKey, limit, elementId, expiredScreenId, expiredPhaseValue) {
             if (timer) clearInterval(timer);
-            
-            let start = getPersistentState(storageKey);
+
+            let start = Number(getPersistentState(storageKey));
             if (!start) {
                 start = Date.now();
                 setPersistentState(storageKey, start);
             }
 
-            const el = document.getElementById(elementId);
-            
-            timer = setInterval(() => {
-                const now = Date.now();
-                const diff = Math.floor((now - start) / 1000);
-                const left = limit - diff;
+            const tick = () => {
+                const elapsed = Math.floor((Date.now() - start) / 1000);
+                const left = limit - elapsed;
                 const today = getToday();
 
                 if (getPersistentState('tp_auth_' + today) !== 'true') {
@@ -886,34 +1041,30 @@
                     return;
                 }
 
+                updateTimerDisplay(elementId, left, limit);
+
                 if (left <= 0) {
                     clearInterval(timer);
-                    if(el) el.textContent = "00:00";
                     setPersistentState('tp_phase_' + today, expiredPhaseValue);
                     showScreen(expiredScreenId);
-                    return;
                 }
+            };
 
-                if(el) {
-                    const m = String(Math.floor(left / 60)).padStart(2, '0');
-                    const s = String(left % 60).padStart(2, '0');
-                    el.textContent = `${m}:${s}`;
-                }
-            }, 1000);
+            tick();
+            timer = setInterval(tick, 1000);
         }
 
-        function openModal(id) { 
+        function openModal(id) {
             const overlay = document.getElementById(id);
-            if (overlay) {
-                overlay.style.display = 'flex';
-                setTimeout(() => overlay.classList.add('show'), 10);
-            }
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => overlay.classList.add('show'));
         }
-        
-        function closeModal() { 
-            document.querySelectorAll('.overlay').forEach(o => {
-                o.classList.remove('show');
-                setTimeout(() => { o.style.display = 'none'; }, 300);
+
+        function closeModal() {
+            document.querySelectorAll('.overlay').forEach((overlay) => {
+                overlay.classList.remove('show');
+                setTimeout(() => { overlay.style.display = 'none'; }, 250);
             });
         }
 
@@ -922,19 +1073,19 @@
             const today = getToday();
 
             if (getPersistentState('tp_auth_' + today) !== 'true') {
-                alert("クーポンを発行するには、再度二次元コードを読み込んでください。");
+                alert('クーポンを発行するには、再度二次元コードを読み込んでください。');
                 showScreen('screen-shared');
                 return;
             }
 
             const currentPhase = getPersistentState('tp_phase_' + today);
             if (currentPhase === 'used') {
-                alert("本日は既に使用済みです。");
+                alert('本日は既に使用済みです。');
                 showScreen('screen-already');
                 return;
             }
             if (currentPhase === 'expired-p2') {
-                alert("利用期限が切れています。");
+                alert('利用期限が切れています。');
                 showScreen('screen-expired-p2');
                 return;
             }
@@ -944,60 +1095,74 @@
             startTimer('tp_p2_start_' + today, P2_LIMIT, 'timer-p2', 'screen-expired-p2', 'expired-p2');
         }
 
+        function createConfetti() {
+            const colors = ['#d10068', '#ff4b98', '#ffd247', '#00b4d0', '#48d99b', '#ffffff'];
+            for (let i = 0; i < 54; i++) {
+                const piece = document.createElement('span');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.setProperty('--duration', (2.4 + Math.random() * 2.1) + 's');
+                piece.style.setProperty('--drift', (-90 + Math.random() * 180) + 'px');
+                piece.style.animationDelay = (Math.random() * .45) + 's';
+                document.body.appendChild(piece);
+                setTimeout(() => piece.remove(), 5200);
+            }
+        }
+
         function executeUse() {
             closeModal();
             const today = getToday();
 
             if (getPersistentState('tp_auth_' + today) !== 'true') {
-                alert("クーポンを利用するには、再度二次元コードを読み込んでください。");
+                alert('クーポンを利用するには、再度二次元コードを読み込んでください。');
                 showScreen('screen-shared');
                 return;
             }
 
             const currentPhase = getPersistentState('tp_phase_' + today);
             if (currentPhase === 'used') {
-                alert("本日は既に使用済みです。");
+                alert('本日は既に使用済みです。');
                 showScreen('screen-already');
                 return;
             }
             if (currentPhase === 'expired-p2') {
-                alert("利用期限が切れています。");
+                alert('利用期限が切れています。');
                 showScreen('screen-expired-p2');
                 return;
             }
 
-            clearInterval(timer); 
-            
-            const ticketEl = document.getElementById('ticket');
-            if (ticketEl) ticketEl.classList.add('used');
-            
-            const useBtn = document.getElementById('use-btn');
-            if (useBtn) {
-                useBtn.classList.remove('use-btn-animated');
-                useBtn.disabled = true;
-                useBtn.style.opacity = '0.5';
-            }
-            
-            setPersistentState('tp_phase_' + today, 'used'); 
+            clearInterval(timer);
 
-            // 🛡️ GASへデータを送信する際、URLパラメータに「フィンガープリントID (fp)」を付与する
-            // これにより、GAS側で「このID(fp)は本日すでに使用済みか」をチェック・記録できるようになります。
+            const ticketElement = document.getElementById('ticket');
+            if (ticketElement) ticketElement.classList.add('used');
+
+            const useButton = document.getElementById('use-btn');
+            if (useButton) {
+                useButton.classList.remove('attention');
+                useButton.disabled = true;
+                useButton.style.opacity = '.55';
+            }
+
+            setPersistentState('tp_phase_' + today, 'used');
+
             const requestUrl = `${GAS_URL}?t=${Date.now()}&fp=${deviceFingerprint}`;
-            fetch(requestUrl, { mode: 'no-cors' }).catch(e => console.log(e));
+            fetch(requestUrl, { mode: 'no-cors' }).catch((error) => console.log(error));
 
             setTimeout(() => {
-                document.body.innerHTML = `
-                <div style="text-align:center; padding:40px 20px; font-family:sans-serif; width:100%;">
-                    <span style="font-size:5rem;">✅</span>
-                    <h2 style="font-weight:900; color:#333;">クーポン利用完了</h2>
-                    <p style="font-weight:bold; color:#666; line-height:1.5;">この画面はもう使えません。<br>タブを完全に閉じてください。</p>
-                    <div style="background:#fff; border:2px solid #ccc; padding:15px; border-radius:12px; margin-top:30px;">
-                        <p style="color:#d32f2f; font-size:0.85rem; font-weight:bold; margin:0;">※再度利用するには、明日以降に<br>二次元コードを読み直す必要があります。</p>
-                        <p style="color:#999; font-size:0.7rem; margin-top:10px;">ID: ${deviceFingerprint}</p>
-                    </div>
-                </div>`;
-            }, 3000);
+                const completeFp = document.getElementById('complete-fp');
+                if (completeFp) completeFp.textContent = 'SECURE ID: ' + deviceFingerprint;
+                showScreen('screen-complete');
+                createConfetti();
+                if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+            }, 650);
         }
+
+        document.querySelectorAll('.overlay').forEach((overlay) => {
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) closeModal();
+            });
+        });
     </script>
 </body>
 </html>
